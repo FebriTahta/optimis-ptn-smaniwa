@@ -21,15 +21,15 @@
                         <p>Masuk dengan akun siswa yang yang dimiliki</p>
                     </li>
                     <li>
-                        <h3><span>#02.</span> Pilih PTN / Jurusan</h3>
-                        <p>Lakukan searching atau filter Perguruan Tinggi Negri maupun Jurusan yang diminati.</p>
+                        <h3><span>#02.</span> Periksa kelengkapan form</h3>
+                        <p>Masukan informasi yang diminta terkait dengan hasil ujian yang diterima</p>
                     </li>
                     <li>
-                        <h3><span>#03.</span> Hasil</h3>
-                        <p>Lihat hasil kalkulasi kemungkinan lolos kedalam PTN yang sudah dipilih</p>
+                        <h3><span>#03.</span> Pilih PTN</h3>
+                        <p>Pilih PTN yang diminati dan lihat kalkulasi hasil kemungkinan lolos</p>
                     </li>
                 </ul>
-                <p class="add_top_30"><a href="#" class="btn_1">Login & Pilih PTN</a>
+                <p class="add_top_30"><a href="/login" class="btn_1">Login & Pilih PTN</a>
                     <a href="#" class="btn_1">Website Smaniwa ?</a></p>
             </div>
             <!-- /row -->

@@ -22,6 +22,6 @@ class Univ extends Model
 
     public function jurusan()
     {
-        return $this->hasMany(Jurusan::class);
+        return $this->belongsToMany(Jurusan::class);
     }
 }

@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jurusans', function (Blueprint $table) {
+        Schema::create('jurusan_univ', function (Blueprint $table) {
             $table->id();
-            $table->string('jurusan_name')->nullable();
+            $table->unsignedBigInteger('jurusan_id')->nullable();
+            $table->unsignedBigInteger('univ_id')->nullable();
             $table->timestamps();
         });
     }
@@ -23,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jurusans');
+        // Schema::table('jurusan_univ', function (Blueprint $table) {
+            Schema::dropIfExists('jurusan_univ');
+        // });
     }
 };

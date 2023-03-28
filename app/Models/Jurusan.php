@@ -10,12 +10,11 @@ class Jurusan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'univ_id',
         'jurusan_name'
     ];
 
     public function univ()
     {
-        return $this->belongsTo(Univ::class);
+        return $this->belongsToMany(Univ::class);
     }
 }

@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Tipekelas extends Model
 {
     use HasFactory;
+    protected $fillable = ['tipekelas_name'];
+
+    public function detailsiswa()
+    {
+        return $this->hasMany(Siswa::class);
+    }
 }

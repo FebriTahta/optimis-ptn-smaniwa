@@ -1,34 +1,27 @@
 <?php
 
 namespace App\Http\Controllers;
-use Excel;
 use App\Models\Univ;
 use App\Models\Jurusan;
 use App\Imports\PtnImport;
 use DataTables;
 use Illuminate\Http\Request;
 
-class PtnController extends Controller
+class JurusanController extends Controller
 {
-    public function univ_page()
+    public function jurusan_page()
     {
-        return view('page.univ');
+        return view('page.jurusan');
     }
 
-    public function import_univ(Request $request)
-    {
-        Excel::import(new PtnImport(), request()->file('file'));
-        return redirect()->back()->with('success','data univ berhasil diimport');
-    }
-
-    public function data_univ(Request $request)
+    public function data_jurusan(Request $request)
     {
         if ($request->ajax()) {
             # code...
-            $data = Univ::with(['jurusan'])->withCount('jurusan')->get();
+            $data = Jurusan::with(['univ'])->withCount('univ')->get();
             return DataTables::of($data)
-            ->addColumn('total_jurusan', function($data){
-                return $data->jurusan_count.' - Jurusan';
+            ->addColumn('total_univ', function($data){
+                return $data->univ_count.' - Universitas';
             })
             ->addColumn('opsi', function($data) {
                 $btn  = ' <button class="btn btn-sm btn-danger" data-id="'.$data->id.'"
@@ -36,16 +29,16 @@ class PtnController extends Controller
                 $btn .= ' <button class="btn btn-sm btn-info" data-id="'.$data->id.'" data-toggle="modal" data-target="#modaledit"><i style="margin-left: 15px" class="fa fa-edit"></i></button>';
                 return $btn;
             })
-            ->rawColumns(['total_jurusan','opsi'])
+            ->rawColumns(['total_univ','opsi'])
             ->make(true);
         }
     }
 
-    public function total_univ(Request $request)
+    public function total_jurusan(Request $request)
     {
         if ($request->ajax()) {
             # code...
-            $total = Univ::count();
+            $total = Jurusan::count();
             return response()->json([
                 'status'=>200,
                 'message'=>'display total univ',

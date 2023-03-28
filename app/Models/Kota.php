@@ -12,4 +12,14 @@ class Kota extends Model
         'provinsi_id',
         'kota_name'
     ];
+
+    public function detailsiswa()
+    {
+        return $this->hasMany(Siswa::class);
+    }
+
+    public function univ()
+    {
+        return $this->hasMany(Univ::class);
+    }
 }

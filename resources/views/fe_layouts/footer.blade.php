@@ -8,7 +8,7 @@
         <div class="row add_bottom_25">
             <div class="col-lg-6">
                 <ul class="footer-selector clearfix">
-                    <li>
+                    {{-- <li>
                         <div class="styled-select currency-selector">
                             <select>
                                 <option value="" selected>Choose PTN</option>
@@ -17,6 +17,9 @@
                                 @endforeach
                             </select>
                         </div>
+                    </li> --}}
+                    <li>
+                        <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
                     </li>
                 </ul>
             </div>
@@ -24,7 +27,7 @@
                 <ul class="additional_links">
                     <li><a href="#0">Terms and conditions</a></li>
                     <li><a href="#0">Privacy</a></li>
-                    <li><span>© 2020 Prozim</span></li>
+                    <li><span>© {{ date('Y') }} FebriTahta</span></li>
                 </ul>
             </div>
         </div>
@@ -83,7 +86,8 @@
     <!--form -->
 </div>
 <!-- /Sign In Modal -->
-
+<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- COMMON SCRIPTS -->
 <script src="{{ asset('fe_assets/js/common_scripts.min.js') }}"></script>
 <script src="{{ asset('fe_assets/js/common_func.js') }}"></script>
@@ -94,8 +98,19 @@
 <script src="{{ asset('fe_assets/js/specific_listing.min.js') }}"></script>
 
 <!-- Map -->
-<script src="{{ asset('fe_assets/js/main_map_scripts.js') }}"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+{{-- <script src="{{ asset('fe_assets/js/main_map_scripts.js') }}"></script> --}}
+{{-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script> --}}
 
+<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.colVis.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+@yield('fe_script')
 </body>
 </html>

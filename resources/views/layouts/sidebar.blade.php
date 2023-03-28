@@ -80,10 +80,10 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Siswa</a>
-            <a class="collapse-item" href="utilities-animation.html">Kelas</a>
+            <a class="collapse-item" href="/admin-siswa">Siswa</a>
+            {{-- <a class="collapse-item" href="utilities-animation.html">Kelas</a>
             <a class="collapse-item" href="utilities-animation.html">Jurusan</a>
-            <a class="collapse-item" href="utilities-border.html">Tahun Ajaaran</a>
+            <a class="collapse-item" href="utilities-border.html">Tahun Ajaaran</a> --}}
           </div>
         </div>
       </li>
@@ -100,7 +100,7 @@
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="#">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Report</span></a>
       </li>

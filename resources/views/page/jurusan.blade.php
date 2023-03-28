@@ -5,10 +5,7 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Universitas / PTN</h1>
-            <a href="#" data-toggle="modal" data-target="#modalimport"
-                class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                    class="fas fa-upload fa-sm text-white-50"></i> Import Univ ".xlsx"</a>
+            <h1 class="h3 mb-0 text-gray-800">Jurusan Universitas / PTN</h1>
         </div>
 
         <!-- Content Row -->
@@ -18,7 +15,7 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total PTN</div>
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total JURUSAN</div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
                                         <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><span id="total"></span></div>
@@ -39,8 +36,8 @@
                         <thead>
                             <tr>
                                 <th style="width: 5%">No</th>
-                                <th>Nama PTN</th>
-                                <th>Total Jurusan</th>
+                                <th>Nama Jurusan</th>
+                                <th>Total PTN</th>
                                 <th style="width: 12%">Option</th>
                             </tr>
                         </thead>
@@ -78,16 +75,16 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            table_univ();
+            table_jurusan();
             total();
         });
 
-        function table_univ() {
+        function table_jurusan() {
             var table = $('#example').DataTable({
                 destroy: true,
                 processing: true,
                 serverSide: true,
-                ajax: "/data-univ",
+                ajax: "/data-jurusan",
                 columns: [{
                         "data": null,
                         "sortable": false,
@@ -97,12 +94,12 @@
                     },
                    
                     {
-                        data: 'univ_name',
-                        name: 'univ_name'
+                        data: 'jurusan_name',
+                        name: 'jurusan_name'
                     },
                     {
-                        data: 'total_jurusan',
-                        name: 'total_jurusan'
+                        data: 'total_univ',
+                        name: 'total_univ'
                     },
                     {
                         data: 'opsi',
@@ -117,7 +114,7 @@
         function total() {
             $.ajax({
                 type: 'GET',
-                url: '/total-univ',
+                url: '/total-jurusan',
                 success: function(response) {
                     $('#total').html(response.data);
                     console.log(response.data);

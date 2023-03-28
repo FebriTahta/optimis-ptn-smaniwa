@@ -47,18 +47,6 @@ class PtnImport implements ToCollection
                         }
                     }
 
-                    // if ($row[0] === 'JURUSAN') {
-                    //     $jurusan_exist = Jurusan::where('jurusan_name', $row[1])->first();
-                    //     if ($jurusan_exist === null) {
-                    //         # code...
-                    //         $jr = [
-                    //             'univ_id' => $univ_exist->id, 
-                    //             'jurusan_name' => $row[1],
-                    //         ];
-                    //         Jurusan::create($jr);
-                    //     }
-                    // }
-
                     $jurusan_exist = Jurusan::where('jurusan_name', $row[1])->first();
                         if ($jurusan_exist === null) {
                             # code...
@@ -66,7 +54,11 @@ class PtnImport implements ToCollection
                                 'univ_id' => $univ_exist->id, 
                                 'jurusan_name' => $row[1],
                             ];
-                            Jurusan::create($jr);
+                            $jr = Jurusan::create($jr);
+                            $jr->univ()->syncWithoutDetaching($univ_exist->id);
+                        }else {
+                            # code...
+                            $jurusan_exist->univ()->syncWithoutDetaching($univ_exist->id);
                         }
                     
                 }
