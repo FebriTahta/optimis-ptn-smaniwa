@@ -47,7 +47,8 @@ class PtnImport implements ToCollection
                         }
                     }
 
-                    $jurusan_exist = Jurusan::where('jurusan_name', $row[1])->first();
+                    if ($row[0] === 'JURUSAN') {
+                        $jurusan_exist = Jurusan::where('jurusan_name', $row[1])->first();
                         if ($jurusan_exist === null) {
                             # code...
                             $jr = [
@@ -60,6 +61,7 @@ class PtnImport implements ToCollection
                             # code...
                             $jurusan_exist->univ()->syncWithoutDetaching($univ_exist->id);
                         }
+                    }
                     
                 }
             }

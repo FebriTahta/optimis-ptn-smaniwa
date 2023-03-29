@@ -21,10 +21,12 @@ class Siswa extends Model
     // ];
     protected $fillable = [
         'user_id',
-        'angkatan_id',
-        'kelas_id',
-        'tipekelas_id',
-        'kota_id',
+        'angkatan',
+        // 'kelas_id',
+        'nama_kelas',
+        'jurusan_kelas',
+        // 'tipekelas_id',
+        'kota',
         'siswa_name',
         'siswa_nisn',
         'siswa_ranking',
@@ -55,5 +57,10 @@ class Siswa extends Model
     public function kota()
     {
         return $this->belongsTo(Kota::class);
+    }
+
+    public function pilih()
+    {
+        return $this->hasMany(Pilih::class);
     }
 }

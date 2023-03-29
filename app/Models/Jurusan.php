@@ -17,4 +17,9 @@ class Jurusan extends Model
     {
         return $this->belongsToMany(Univ::class);
     }
+
+    public function pilih()
+    {
+        return $this->hasMany(Pilih::class);
+    }
 }

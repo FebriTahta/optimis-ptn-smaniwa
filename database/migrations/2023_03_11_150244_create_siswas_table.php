@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('siswas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('angkatan_id')->nullable();
-            $table->unsignedBigInteger('kelas_id')->nullable();
-            $table->unsignedBigInteger('tipekelas_id')->nullable();
-            $table->unsignedBigInteger('kota_id')->nullable();
+            // $table->unsignedBigInteger('angkatan_id')->nullable();
+            $table->string('angkatan')->nullable();
+            $table->string('nama_kelas')->nullable();
+            // $table->unsignedBigInteger('kelas_id')->nullable();
+            // $table->unsignedBigInteger('tipekelas_id')->nullable();
+            $table->string('jurusan_kelas')->nullable();
+            // $table->unsignedBigInteger('kota_id')->nullable();
+            $table->string('kota')->nullable();
             $table->string('siswa_name')->nullable();
             $table->string('siswa_nisn')->nullable();
             $table->string('siswa_ranking')->nullable();

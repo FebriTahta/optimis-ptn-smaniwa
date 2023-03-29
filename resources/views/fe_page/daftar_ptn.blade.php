@@ -13,15 +13,20 @@
                     <div class="main_info_wrapper">
                         <div class="main_info clearfix">
                             <div class="user_thumb">
-                                {{-- <figure>
-                                    img
-                                </figure> --}}
+                                <figure>
+                                    {{-- img --}}
+                                </figure>
                                 <em class="online"><span></span>Online</em>
                             </div>
                             <div class="user_desc">
                                 <h3>{{ auth()->user()->name }}</h3>
                                 <ul class="tags">
+                                    <li><a href="#0">Kota - </a></li>
                                     <li><a href="#0">Kelas - </a></li>
+                                    <li><a href="#0">Jurusan - </a></li>
+                                    <li><a href="#0">Angkatan - </a></li>
+                                    <li><a href="#0">Ranking - </a></li>
+                                    <li><a href="#0">Sertifikat - </a></li>
                                 </ul>
                             </div>
                             <div class="score_in">
@@ -33,12 +38,14 @@
                         <!-- /main_info_wrapper -->
                         <hr>
                         <h4>Ketentuan</h4>
-                        <p>Tingkat keakuratan kalkulasi kemungkinan lolos pada PTN yang dipilih tergantung dari kebenratan data.
-                        </p>
+                        <span>Tingkat keakuratan kalkulasi kemungkinan lolos pada PTN yang dipilih tergantung dari kebenratan data.
+                        </span>
                         <!-- /content_more -->
-                        <a href="/my-info" class="show_hide" data-content="toggle-text">Data kamu belum lengkap. lengkapi terlebih dahulu sebelum memilih PTN. 
+                        @if ($kelengkapan == 'not')
+                        <br><a href="/my-info" class="show_hide" data-content="toggle-text">lengkapi data sebelum memilih PTN. 
                             <u>Klik disini</u> 
                         </a>
+                        @endif
                     </div>
                     <!-- /main_info -->
                 </div>
@@ -72,7 +79,16 @@
                                                 <div class="services_list clearfix">
                                                     <ul>
                                                         @foreach ($item->jurusan as $j)
-                                                            <li>{{ $j->jurusan_name }} <strong><small>from</small> $80</strong></li>
+                                                            <li>
+                                                                {{ $j->jurusan_name }} 
+                                                                <strong>
+                                                                    <form id="form_pilih_ptn">
+                                                                        <input type="hidden" name="univ_id" value="{{ $item->id }}">
+                                                                        <input type="hidden" name="jurusan_id" value="{{ $j->id }}">
+                                                                        <a href="#" style="background: transparent"><small id="pilih{{ $j->id }}">Pilih</small></a>
+                                                                    </form>
+                                                                </strong>
+                                                            </li>
                                                         @endforeach
                                                     </ul>
                                                 </div>

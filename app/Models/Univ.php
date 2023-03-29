@@ -24,4 +24,9 @@ class Univ extends Model
     {
         return $this->belongsToMany(Jurusan::class);
     }
+
+    public function pilih()
+    {
+        return $this->hasMany(Pilih::class);
+    }
 }
