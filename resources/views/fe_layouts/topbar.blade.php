@@ -69,12 +69,25 @@
                     <a href="/" style="color: white">Optimis PTN</a>
                 </div>
                 <ul>
-                    <li class="submenu">
-                        <a href="#0" class="show-submenu">Profile</a>
+                    {{-- <li class="submenu"> --}}
+                    <li>
+                        {{-- <a href="#0" class="show-submenu">MENU</a>
                         <ul>
                             <li><a href="#">PTN Pilihanku</a></li>
                             <li><a href="#">Logout</a></li>
-                        </ul>
+                        </ul> --}}
+                        @auth
+                            <a href="/my-info">PROFILE</a>
+                        @else
+                            <a href="#" id="profile">PROFILE</a>
+                        @endauth
+                    </li>
+                    <li>
+                        @auth
+                            <a href="/daftar-ptn">DAFTAR PTN</a>
+                        @else
+                            <a href="#" id="daftar_ptn">DAFTAR PTN</a>
+                        @endauth
                     </li>
                 </ul>
             </nav>

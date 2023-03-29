@@ -5,6 +5,7 @@ use App\Models\Univ;
 use App\Models\Jurusan;
 use App\Models\Siswa;
 use App\Models\User;
+use App\Models\Pilih;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -137,6 +138,50 @@ class FEController extends Controller
                     ]
                 );
             }
+        }
+    }
+
+    public function pilih_univ(Request $request)
+    {
+        $pilihan = Pilih::where('univ_id', $request->univ_id)->where('jurusan_id',$request->jurusan_id)
+        ->where('siswa_id', auth()->user()->siswa->id,);
+
+        if ($pilihan == null) {
+            # code...
+            $siswa = Siswa::where('id', auth()->user()->siswa->id,)->first();
+            if ($siswa->pilih->count() < 2) {
+                # code...
+                $data = Pilih::create(
+                    [
+                        'univ_id'=> $request->univ_id,
+                        'jurusan_id'=> $request->jurusan_id,
+                        'siswa_id'=> auth()->user()->siswa->id,
+                    ]
+                );
+                return response()->json(
+                    [
+                        'status'=> 200,
+                        'message'=> 'Berhasil menambahkan univ ke pilihan anda',
+                        'data'=>'pilihan'.$data->univ_id.''.$data->jurusan_id
+                    ]
+                );
+            }else {
+                # code...
+                return response()->json(
+                    [
+                        'status'=> 400,
+                        'message'=> 'Maksimal memilih 2 univ & anda sudah memilih 2 Univ & Jurusan. Hapus pilihan anda terlebih dahulu'
+                    ]
+                );
+            }
+        }else {
+            # code...
+            return response()->json(
+                [
+                    'status'=> 400,
+                    'message'=> 'Anda sudah memilih univ tersebut'
+                ]
+            );
         }
     }
 

@@ -112,5 +112,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
 @yield('fe_script')
+
+<script>
+    $('#daftar_ptn').on('click', function () {
+        toastr.error('harus login terlebih dahulu');
+    });
+    $('#profile').on('click', function () {
+        toastr.error('harus login terlebih dahulu');
+    });
+</script>
 </body>
 </html>
