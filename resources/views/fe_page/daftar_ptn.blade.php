@@ -170,6 +170,30 @@
                                                                                 ><i class="icon_heart"></i> <span>PROSES RATING</span></a>
                                                                             </li>
                                                                         </ul>
+                                                                    @else
+                                                                        <div class="clearfix add_bottom_15">
+                                                                            <span class="rating">{{ $rating->score }}<small>/10</small> <strong>Hasil Rating</strong></span>
+                                                                        </div>
+                                                                        @if ($rating->score > 80)
+                                                                            <h4>"Great!!"</h4>
+                                                                            <p>Kamu berpeluang besar untuk masuk ke PTN  <br>{{ $p->univ->univ_name }} - {{ $p->jurusan->jurusan_name }} <br>
+                                                                            Jaga kualitas prestasi kamu..!!</p>
+                                                                        @else
+                                                                            <h4>"Sorry!!"</h4>
+                                                                            <p>Kecil peluang kamu untuk diterima di PTN  <br>{{ $p->univ->univ_name }} - {{ $p->jurusan->jurusan_name }} <br>
+                                                                                Tetap semangat dan jangan menyerah, sukses bisa datang dari mana saja..!!</p>
+                                                                        @endif
+                                                                        
+                                                                        
+                                                                        <ul>
+                                                                            <li><a href="#0"><i class="icon_book"></i><span>DAFTAR SISWA</span></a></li>
+                                                                            <li><a href="#0"><i class="icon_dislike"></i><span>HAPUS PTN</span></a></li>
+                                                                            <li><a href="#0" data-toggle="modal" data-target="#mymodal" 
+                                                                                data-univ_id="{{ $p->univ_id }}" data-jurusan_id="{{ $p->jurusan_id }}" data-kota="{{ $p->univ->kota->kota_name }}"
+                                                                                data-univ_alumni="{{ $p->univ->univ_alumni }}"
+                                                                                ><i class="icon_heart"></i> <span>PROSES RATING</span></a>
+                                                                            </li>
+                                                                        </ul>
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -223,8 +247,8 @@
                     <input type="hidden" name="jurusan_id" id="jurusan_id" class="form-control">
                     <input type="hidden" name="kota" id="kota" class="form-control">
                     <input type="hidden" name="univ_alumni" id="univ_alumni" class="form-control">
-                    <input type="radio" name="linjur" value="linjur"> <label>Lintas Jurusan</label><br>
-                    <input type="radio" name="linjur" value="tidak_linjur"> <label>Tidak Lintas Jurusan</label>
+                    <input type="radio" name="linjur" value="linjur" required> <label>Lintas Jurusan</label><br>
+                    <input type="radio" name="linjur" value="tidak_linjur" required> <label>Tidak Lintas Jurusan</label>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
