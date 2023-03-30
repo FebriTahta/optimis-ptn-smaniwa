@@ -44,7 +44,7 @@ class FEController extends Controller
 
     public function daftar_ptn()
     {
-        $univ = Univ::get();
+        $univ = Univ::paginate(2);
         $jurusan = Jurusan::get();
         $bagian1 = round($jurusan->count() / 2);
         $bagian2 = $jurusan->count() - $bagian1;
@@ -163,7 +163,7 @@ class FEController extends Controller
                     [
                         'status'=> 200,
                         'message'=> 'Berhasil menambahkan univ ke pilihan anda',
-                        'data'=>'pilihan'.$data->univ_id.''.$data->jurusan_id
+                        'data'=>'pilih'.$data->univ_id.''.$data->jurusan_id
                     ]
                 );
             }else {
@@ -287,6 +287,69 @@ class FEController extends Controller
                 'message'=> 'Rating berhasil dijalankan'
             ]
         );
+    }
+
+    public function my_choice(Request $request)
+    {
+        if ($request->ajax()) {
+            # code...
+            $siswa = auth()->user()->siswa;
+            if ($siswa !== null) {
+                # code...
+                $pilih = Pilih::where('siswa_id', $siswa->id)->get();
+                if ($pilih->count() > 0) {
+                    # code...
+                    return response()->json([
+                        'status'=>200,
+                        'message'=>'Kamu sudah memilih PTN. Lihat rating kemungkinan lolos PTN kamu',
+                        'data'=>$pilih,
+                        'total'=>$pilih->count()
+                    ]);
+                }else {
+                    # code...
+                    return response()->json([
+                        'status'=>200,
+                        'message'=>'Data siswa updated namun belum melakukan pemilihan PTN',
+                        'total'=>$pilih->count()
+                    ]);
+                }
+            }else {
+                # code...
+                return response()->json([
+                    'status'=>400,
+                    'message'=>'Data siswa belum dilengkapi',
+                ]);
+            }
+        }
+    }
+
+    public function hapus_ptn_pilihan(Request $request)
+    {
+        if ($request->ajax()) {
+            # code...
+            $pilih = Pilih::find($request->id);
+            $rating = Rating::where('univ_id',$pilih->univ_id)->where('jurusan_id',$pilih->jurusan_id)
+            ->where('siswa_id',$pilih->siswa_id)->first();
+            if ($pilih !== null) {
+                # code...
+                if ($rating !== null) {
+                    # code...
+                    $rating->delete();
+                }
+                $pilih->delete();
+                return response()->json([
+                    'status'=>200,
+                    'message'=>'Sukses menghapus PTN pilihan',
+                ]);
+            }else {
+                # code...
+                return response()->json([
+                    'status'=>400,
+                    'message'=>'Data PTN pilihan tidak ditemukan',
+                ]);
+            }
+
+        }
     }
 
 }

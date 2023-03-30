@@ -111,19 +111,30 @@
 	                                        <div class="wrapper_indent add_bottom_25">
 	                                            <p>Pilih daftar jurusan yang tersedia berikut ini</p>
 	                                            <h6>Jurusan</h6>
-	                                            <ul class="bullets">
-                                                    @foreach ($item->jurusan as $j)
-                                                        <li>
-                                                            <strong>{{ $j->jurusan_name }}</strong> - 
-                                                            <a type="button" style="border: none; background: transparent; color: red"><u>PILIH</u></a>
-                                                        </li>
-                                                    @endforeach
-	                                            </ul>
+                                                @if (auth()->user()->siswa !== null)
+                                                    <ul class="bullets">
+                                                        @foreach ($item->jurusan as $j)
+                                                            <li>
+                                                                <strong>{{ $j->jurusan_name }}</strong> - 
+                                                                <a type="button" id="pilih{{ $item->id }}{{ $j->id }}" style="border: none; background: transparent; color: red"
+                                                                onclick="pilih({{ $item->id }},{{ $j->id }})"><u>PILIH</u></a>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @else
+                                                    <ul class="bullets">
+                                                        @foreach ($item->jurusan as $j)
+                                                            <li>
+                                                                <strong>{{ $j->jurusan_name }}</strong> - 
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
 	                                        </div>
 	                                        <!--  End wrapper indent -->
                                             <hr>
                                             @endforeach
-	                                        
+                                            {{ $univ->links() }}
 	                                    </div>
 	                                </div>
 	                            </div>
@@ -163,7 +174,7 @@
                                                                         <p>Rating belum dijalankan untuk <br>{{ $p->univ->univ_name }} - {{ $p->jurusan->jurusan_name }}</p>
                                                                         <ul>
                                                                             <li><a href="#0"><i class="icon_book"></i><span>DAFTAR SISWA</span></a></li>
-                                                                            <li><a href="#0"><i class="icon_dislike"></i><span>HAPUS PTN</span></a></li>
+                                                                            <li><a href="#0" data-toggle="modal" data-target="#modalhapus" data-id="{{ $p->id }}"><i class="icon_dislike"></i><span>HAPUS PTN</span></a></li>
                                                                             <li><a href="#0" data-toggle="modal" data-target="#mymodal" 
                                                                                 data-univ_id="{{ $p->univ_id }}" data-jurusan_id="{{ $p->jurusan_id }}" data-kota="{{ $p->univ->kota->kota_name }}"
                                                                                 data-univ_alumni="{{ $p->univ->univ_alumni }}"
@@ -183,11 +194,9 @@
                                                                             <p>Kecil peluang kamu untuk diterima di PTN  <br>{{ $p->univ->univ_name }} - {{ $p->jurusan->jurusan_name }} <br>
                                                                                 Tetap semangat dan jangan menyerah, sukses bisa datang dari mana saja..!!</p>
                                                                         @endif
-                                                                        
-                                                                        
                                                                         <ul>
                                                                             <li><a href="#0"><i class="icon_book"></i><span>DAFTAR SISWA</span></a></li>
-                                                                            <li><a href="#0"><i class="icon_dislike"></i><span>HAPUS PTN</span></a></li>
+                                                                            <li><a href="#0" data-toggle="modal" data-target="#modalhapus" data-id="{{ $p->id }}"><i class="icon_dislike"></i><span>HAPUS PTN</span></a></li>
                                                                             <li><a href="#0" data-toggle="modal" data-target="#mymodal" 
                                                                                 data-univ_id="{{ $p->univ_id }}" data-jurusan_id="{{ $p->jurusan_id }}" data-kota="{{ $p->univ->kota->kota_name }}"
                                                                                 data-univ_alumni="{{ $p->univ->univ_alumni }}"
@@ -200,8 +209,13 @@
                                                             <!-- /row -->
                                                         </div>
                                                         @endforeach
+                                                        <span>Apabila sudah memilih PTN namun daftar pilihanmu belum tampil disini. <br>
+                                                            Klik tombol berikut untuk melihat update PTN yang sudah dipilih</span><br>
+                                                            <hr>
+                                                        <a href="/daftar-ptn" class="btn_1 btn_scroll">REFRESH</a>
                                                     @else
                                                         <p>Pilih PTN yang anda minati terlebih dahulu atau lakukan refresh pada halaman ini untuk menampilkan data PTN pilihan anda</p>
+                                                        <a href="/daftar-ptn" class="btn_1 btn_scroll">REFRESH</a>
                                                     @endif
                                                 @else
                                                 <div class="review_card">
@@ -247,7 +261,7 @@
                     <input type="hidden" name="jurusan_id" id="jurusan_id" class="form-control">
                     <input type="hidden" name="kota" id="kota" class="form-control">
                     <input type="hidden" name="univ_alumni" id="univ_alumni" class="form-control">
-                    <input type="radio" name="linjur" value="linjur" required> <label>Lintas Jurusan</label><br>
+                    <input type="radio" name="linjur" value="linjur" required> <label>Lintas Jurusan (menyimpang dari jurusan SMA/SMK)</label><br>
                     <input type="radio" name="linjur" value="tidak_linjur" required> <label>Tidak Lintas Jurusan</label>
                     </div>
                     <div class="modal-footer">
@@ -258,14 +272,51 @@
             </form>
         </div>
     </div>
+
+    <div class="modal fade" id="modalhapus" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <form id="form_hapus">@csrf
+            <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                    <p>Yakin akan meghapus PTN pilihan anda ? <br>
+                       Semoga PTN yang lain menampilkan hasil rating seperti yang kamu inginkan
+                    </p>
+                    <input type="hidden" class="form-control" name="id" id="id" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn_1 btn_scroll" value="Hapus PTN" id="btn_hapus">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
 @section('fe_script')
     <script>
         $(document).ready(function() {
-            // table_univ();
-            // total();
+            my_choice();
         });
+
+        function my_choice() {
+            $.ajax({
+                type: 'GET',
+                url: '/my-choice',
+                success: function(response) {
+                    if (response.status == 200) {
+                        toastr.success(response.message);
+                        $.each(response.data, function(key, dt) {
+                            $('#pilih'+dt.univ_id+dt.jurusan_id).html('TELAH DIPILIH');
+                            document.getElementById("pilih"+dt.univ_id+dt.jurusan_id).style.color = "blue";
+                        });
+                    }else{
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        }
 
         $('#mymodal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget)
@@ -280,44 +331,12 @@
             modal.find('.modal-body #univ_alumni').val(univ_alumni);
         })
 
-        $('#form_pilih_ptn').submit(function(e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            $.ajax({
-                type: 'POST',
-                url: "/pilih-univ",
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                beforeSend: function() {
-                    // $('#btnadd').attr('disabled', 'disabled');
-                    // $('#btnadd').val('Process...');
-                },
-                success: function(response) {
-                    if (response.status == 200) {
-                        // $("#formadd")[0].reset();
-                        // $('#btnadd').val('SUBMIT');
-                        // $('#btnadd').attr('disabled', false);
-                        toastr.success(response.message);
-                        $('#'+response.data).val('telah dipilih');
-                        
-                    } else {
-                        $('#btnadd').val('SUBMIT!');
-                        $('#btnadd').attr('disabled', false);
-                        toastr.error(response.message);
-                        $('#errList').html("");
-                        $('#errList').addClass('alert alert-danger');
-                        $.each(response.errors, function(key, err_values) {
-                            $('#errList').append('<div>' + err_values + '</div>');
-                        });
-                    }
-                },
-                error: function(data) {
-                    console.log(data);
-                }
-            });
-        });
+        $('#modalhapus').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+            var modal = $(this)
+            modal.find('.modal-body #id').val(id);
+        })
 
         function pilih(univ_id,jurusan_id) {
             $.ajax({
@@ -331,7 +350,8 @@
                 success: function(response) {
                     if (response.status == 200) {
                         toastr.success(response.message);
-                        $('#'+response.data).val('telah dipilih');   
+                        $('#'+response.data).html('TELAH DIPILIH');
+                            document.getElementById(response.data).style.color = "blue";
                     }else{
                         toastr.error(response.message);
                     }
@@ -364,6 +384,45 @@
                     } else {
                         $('#btn_rating').val('Do Rating');
                         $('#btn_rating').attr('disabled', false);
+                        toastr.error(response.message);
+                        $('#errList').html("");
+                        $('#errList').addClass('alert alert-danger');
+                        $.each(response.errors, function(key, err_values) {
+                            $('#errList').append('<div>' + err_values + '</div>');
+                        });
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        });
+
+        $('#form_hapus').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type: 'POST',
+                url: "/hapus-ptn-pilihan",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $('#btn_hapus').attr('disabled', 'disabled');
+                    $('#btn_hapus').val('Process...');
+                },
+                success: function(response) {
+                    if (response.status == 200) {
+                        $("#form_hapus")[0].reset();
+                        $('#btn_hapus').val('Hapus PTN');
+                        $('#btn_hapus').attr('disabled', false);
+                        toastr.success(response.message);
+                        window.location.href = "/daftar-ptn";
+
+                    } else {
+                        $('#btn_hapus').val('Hapus PTN');
+                        $('#btn_hapus').attr('disabled', false);
                         toastr.error(response.message);
                         $('#errList').html("");
                         $('#errList').addClass('alert alert-danger');
