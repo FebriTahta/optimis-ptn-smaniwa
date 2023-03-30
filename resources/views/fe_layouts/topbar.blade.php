@@ -26,9 +26,11 @@
     <!-- SPECIFIC CSS -->
     <link href="{{ asset('fe_assets/css/listing.css') }}" rel="stylesheet">
     <link href="{{ asset('fe_assets/css/home.css') }}" rel="stylesheet">
+    <link href="{{ asset('fe_assets/css/detail-page.css') }}" rel="stylesheet">
 
     <!-- YOUR CUSTOM CSS -->
     <link href="{{ asset('fe_assets/css/custom.css') }}" rel="stylesheet">
+    
     @yield('css')
 </head>
 

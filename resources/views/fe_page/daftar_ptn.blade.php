@@ -8,7 +8,7 @@
     <main class="bg_color" style="transform: none;">
         <div class="container margin_detail" style="transform: none;">
             <div class="row" style="transform: none;">
-                <div class="col-lg-8">
+                <div class="col-lg-4">
                     <div class="box_general">
                         <div class="main_info_wrapper">
                             <div class="main_info clearfix">
@@ -48,7 +48,11 @@
                                 </div>
                                 <div class="score_in">
                                     <div class="rating">
-                                        <div class="score"><span>NA<em>Nilai Akhir</em></span><strong>8.9</strong></div>
+                                        <div class="score"><span>NA<em>Nilai Akhir</em></span>
+                                            @if (auth()->user()->siswa !== null)
+                                                <strong>{{ auth()->user()->siswa->siswa_nilai ? auth()->user()->siswa->siswa_nilai : '-' }}</strong>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -74,125 +78,162 @@
                         <!-- /main_info -->
                     </div>
                     <!-- /box_general -->
-                    <div class="box_general">
-                        <div class="tabs_detail">
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a id="tab-A" href="#pane-A" class="nav-link active" data-toggle="tab"
-                                        role="tab" aria-selected="true">DAFTAR PTN</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content" role="tablist">
-                                <div id="pane-A" class="card tab-pane fade active show" role="tabpanel"
-                                    aria-labelledby="tab-A">
-                                    <div class="card-header" role="tab" id="heading-A">
-                                        <h5>
-                                            <a class="collapsed" data-toggle="collapse" href="#collapse-A"
-                                                aria-expanded="false" aria-controls="collapse-A">
-                                                DAFTAR PTN
-                                            </a>
-                                        </h5>
-                                    </div>
-                                    <div id="collapse-A" class="collapse" role="tabpanel" aria-labelledby="heading-A"
-                                        style="">
-                                        <div class="card-body info_content">
-                                            @foreach ($univ as $item)
-                                                <div class="indent_title_in">
-                                                    <i class="icon_document_alt"></i>
-                                                    <h3>{{ $item->univ_name }}</h3>
-                                                    <p>{{ $item->kota->kota_name }}, {{ $item->jurusan->count() }} JURUSAN
-                                                    </p>
-                                                </div>
-                                                <div class="wrapper_indent">
-                                                    <h6>Daftar Jurusan</h6>
-                                                    <div class="services_list clearfix">
-                                                        <ul>
-                                                            {{-- <form id="form_pilih_ptn">@csrf --}}
-                                                                @foreach ($item->jurusan as $j)
-                                                                    <li>
-                                                                        {{ $j->jurusan_name }}
-                                                                        <strong>
-                                                                            
-                                                                                <input type="hidden" name="univ_id"
-                                                                                    value="{{ $item->id }}">
-                                                                                <input type="hidden" name="jurusan_id"
-                                                                                    value="{{ $j->id }}">
-                                                                                <input type="submit" id="pilihan{{ $item->id }}{{ $j->id }}" data-id="{{ $item->id }}" onclick="pilih()" value="PILIH" style="background: transparent; border: none">
-                                                                                {{-- <a type="submit" 
-                                                                                    style="background: transparent"><small
-                                                                                        id="pilihan{{ $item->id }}{{ $j->id }}">Pilih</small></a> --}}
-                                                                            
-                                                                        </strong>
-                                                                    </li>
-                                                                @endforeach
-                                                            {{-- </form> --}}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /tab -->
-                            </div>
-                            <!-- /tab-content -->
-                        </div>
-                        <!-- /tabs_detail -->
-                    </div>
                 </div>
-                <!-- /col -->
+
+                <div class="col-lg-8">
+                    <div class="box_general">
+	                    <div class="tabs_detail">
+	                        <ul class="nav nav-tabs" role="tablist">
+	                            <li class="nav-item">
+	                                <a id="tab-A" href="#pane-A" class="nav-link active" data-toggle="tab" role="tab">DAFTAR PTN</a>
+	                            </li>
+	                            <li class="nav-item">
+	                                <a id="tab-B" href="#pane-B" class="nav-link" data-toggle="tab" role="tab">PILIHANKU</a>
+	                            </li>
+	                        </ul>
+	                        <div class="tab-content" role="tablist">
+	                            <div id="pane-A" class="card tab-pane fade show active" role="tabpanel" aria-labelledby="tab-A">
+	                                <div class="card-header" role="tab" id="heading-A">
+	                                    <h5>
+	                                        <a class="collapsed" data-toggle="collapse" href="#collapse-A" aria-expanded="true" aria-controls="collapse-A">
+	                                            DAFTAR PTN
+	                                        </a>
+	                                    </h5>
+	                                </div>
+	                                <div id="collapse-A" class="collapse" role="tabpanel" aria-labelledby="heading-A">
+	                                    <div class="card-body info_content">
+                                            @foreach ($univ as $item)
+                                            <div class="indent_title_in">
+	                                            <i class="icon_document_alt"></i>
+	                                            <h3>{{ $item->univ_name }}</h3>
+	                                            <p>{{ $item->kota->kota_name }}</p>
+	                                        </div>
+	                                        <div class="wrapper_indent add_bottom_25">
+	                                            <p>Pilih daftar jurusan yang tersedia berikut ini</p>
+	                                            <h6>Jurusan</h6>
+	                                            <ul class="bullets">
+                                                    @foreach ($item->jurusan as $j)
+                                                        <li>
+                                                            <strong>{{ $j->jurusan_name }}</strong> - 
+                                                            <a type="button" style="border: none; background: transparent; color: red"><u>PILIH</u></a>
+                                                        </li>
+                                                    @endforeach
+	                                            </ul>
+	                                        </div>
+	                                        <!--  End wrapper indent -->
+                                            <hr>
+                                            @endforeach
+	                                        
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <!-- /tab -->
+	                            <div id="pane-B" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-B">
+	                                <div class="card-header" role="tab" id="heading-B">
+	                                    <h5>
+	                                        <a class="collapsed" data-toggle="collapse" href="#collapse-B" aria-expanded="false" aria-controls="collapse-B">
+	                                            PILIHANKU
+	                                        </a>
+	                                    </h5>
+	                                </div>
+	                                <div id="collapse-B" class="collapse" role="tabpanel" aria-labelledby="heading-B">
+	                                    <div class="card-body reviews">
+	                                        <div id="reviews">
+                                                @if (auth()->user()->siswa !== null)
+                                                    @if (auth()->user()->siswa->pilih->count() > 0)
+                                                        @foreach (auth()->user()->siswa->pilih as $p)
+                                                        <div class="review_card">
+                                                            <div class="row">
+                                                                <div class="col-md-2 user_info">
+                                                                    <figure>
+                                                                        {{-- <img src="{{ asset('fe_assets/img/avatar4.jpg') }}" alt=""> --}}
+                                                                    </figure>
+                                                                    <h5>{{ auth()->user()->name }}</h5>
+                                                                </div>
+                                                                <div class="col-md-10 review_content">
+                                                                    @php
+                                                                        $rating = App\Models\Rating::where('siswa_id',auth()->user()->siswa->id)
+                                                                        ->where('univ_id', $p->univ_id)->where('jurusan_id', $p->jurusan_id)->first();
+                                                                    @endphp
+                                                                    @if ($rating == null)
+                                                                        <div class="clearfix add_bottom_15">
+                                                                            <span class="rating">X.X<small>/10</small> <strong>Belum di rating</strong></span>
+                                                                        </div>
+                                                                        <h4>"Oops!!"</h4>
+                                                                        <p>Rating belum dijalankan untuk <br>{{ $p->univ->univ_name }} - {{ $p->jurusan->jurusan_name }}</p>
+                                                                        <ul>
+                                                                            <li><a href="#0"><i class="icon_book"></i><span>DAFTAR SISWA</span></a></li>
+                                                                            <li><a href="#0"><i class="icon_dislike"></i><span>HAPUS PTN</span></a></li>
+                                                                            <li><a href="#0" data-toggle="modal" data-target="#mymodal" 
+                                                                                data-univ_id="{{ $p->univ_id }}" data-jurusan_id="{{ $p->jurusan_id }}" data-kota="{{ $p->univ->kota->kota_name }}"
+                                                                                data-univ_alumni="{{ $p->univ->univ_alumni }}"
+                                                                                ><i class="icon_heart"></i> <span>PROSES RATING</span></a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            <!-- /row -->
+                                                        </div>
+                                                        @endforeach
+                                                    @else
+                                                        <p>Pilih PTN yang anda minati terlebih dahulu atau lakukan refresh pada halaman ini untuk menampilkan data PTN pilihan anda</p>
+                                                    @endif
+                                                @else
+                                                <div class="review_card">
+                                                    Update Data Anda Terlebih Dahulu
+                                                </div>
+                                                @endif
+                                                
+	                                            
+	                                            <!-- /review_card -->
+	                                        </div>
+	                                        <!-- /reviews -->
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <!-- /tab-content -->
+	                    </div>
+	                    <!-- /tabs_detail -->
+	                </div>
+                </div>
+                {{-- <!-- /col -->
                 <div class="col-lg-4" id="sidebar_fixed"
                     style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
 
                     <!-- /box_booking -->
-
-
-                    <div class="theiaStickySidebar"
-                        style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none; top: 0px;">
-                        <div class="box_booking mobile_fixed">
-                            <div class="head">
-                                <a href="#0" class="close_panel_mobile"><i class="icon_close"></i></a>
-                            </div>
-                            <!-- /head -->
-                            <div class="main">
-                                <div style="text-align: center; border-bottom: 1px">
-                                    <h3>Konfirmasi</h3>
-                                </div>
-                                <p>1. EKONOMI : ITS</p>
-                                <p>1. EKONOMI : ITS</p>
-                                <!-- /type -->
-                                <div class="dropdown time">
-                                    {{-- <a href="#" data-toggle="dropdown">Hour <span id="selected_time"></span></a> --}}
-                                </div>
-                                <!-- /dropdown -->
-                                <a href="booking.html" class="btn_1 full-width booking">SUBMIT</a>
-                            </div>
-                        </div>
-                        <div class="btn_reserve_fixed"><a href="booking.html" class="btn_1 full-width booking">SUBMIT</a>
-                        </div>
-                        <div class="resize-sensor"
-                            style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;">
-                            <div class="resize-sensor-expand"
-                                style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
-                                <div
-                                    style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 837px; height: 721px;">
-                                </div>
-                            </div>
-                            <div class="resize-sensor-shrink"
-                                style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
-                                <div
-                                    style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </div> --}}
             </div>
             <!-- /row -->
         </div>
         <!-- /container -->
     </main>
+
+    <div class="modal fade" id="mymodal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <form id="form_rating">@csrf
+            <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                    <p>Apakah Jurusan yang kamu pilih pada PTN termasuk Lintas Jurusan atau tidak dengan jurusan
+                        pendidikanmu di SMA/SMK ?
+                    </p>
+                    <input type="hidden" name="univ_id" id="univ_id" class="form-control">
+                    <input type="hidden" name="jurusan_id" id="jurusan_id" class="form-control">
+                    <input type="hidden" name="kota" id="kota" class="form-control">
+                    <input type="hidden" name="univ_alumni" id="univ_alumni" class="form-control">
+                    <input type="radio" name="linjur" value="linjur"> <label>Lintas Jurusan</label><br>
+                    <input type="radio" name="linjur" value="tidak_linjur"> <label>Tidak Lintas Jurusan</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn_1 btn_scroll" value="Do Rating" id="btn_rating">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
 @section('fe_script')
@@ -202,45 +243,18 @@
             // total();
         });
 
-        function table_univ() {
-            var table = $('#example').DataTable({
-                destroy: true,
-                processing: true,
-                serverSide: true,
-                lengthChange: false,
-                searching: false,
-                info: false,
-                ajax: "/data-univ",
-                columns: [{
-                        "data": null,
-                        "sortable": false,
-                        render: function(data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-
-                    {
-                        data: 'univ_name',
-                        name: 'univ_name'
-                    },
-                    {
-                        data: 'total_jurusan',
-                        name: 'total_jurusan'
-                    },
-                ]
-            });
-        }
-
-        function total() {
-            $.ajax({
-                type: 'GET',
-                url: '/total-univ',
-                success: function(response) {
-                    $('#total').html(response.data);
-                    console.log(response.data);
-                }
-            });
-        }
+        $('#mymodal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget)
+            var univ_id = button.data('univ_id')
+            var jurusan_id = button.data('jurusan_id')
+            var kota = button.data('kota')
+            var univ_alumni = button.data('univ_alumni')
+            var modal = $(this)
+            modal.find('.modal-body #univ_id').val(univ_id);
+            modal.find('.modal-body #jurusan_id').val(jurusan_id);
+            modal.find('.modal-body #kota').val(kota);
+            modal.find('.modal-body #univ_alumni').val(univ_alumni);
+        })
 
         $('#form_pilih_ptn').submit(function(e) {
             e.preventDefault();
@@ -281,8 +295,63 @@
             });
         });
 
-        function pilih(univ_id) {
-            console.log(univ_id);
+        function pilih(univ_id,jurusan_id) {
+            $.ajax({
+                type: 'POST',
+                url: '/pilih-ptn',
+                data: {
+                    univ_id: univ_id,
+                    jurusan_id: jurusan_id,
+                    "_token": "{{ csrf_token() }}",
+                },
+                success: function(response) {
+                    if (response.status == 200) {
+                        toastr.success(response.message);
+                        $('#'+response.data).val('telah dipilih');   
+                    }else{
+                        toastr.error(response.message);
+                    }
+                }
+            });
         }
+
+        $('#form_rating').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type: 'POST',
+                url: "/proses-rating",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $('#btn_rating').attr('disabled', 'disabled');
+                    $('#btn_rating').val('Process...');
+                },
+                success: function(response) {
+                    if (response.status == 200) {
+                        $("#form_rating")[0].reset();
+                        $('#btn_rating').val('Do Rating');
+                        $('#btn_rating').attr('disabled', false);
+                        toastr.success(response.message);
+                        window.location.href = "/daftar-ptn";
+
+                    } else {
+                        $('#btn_rating').val('Do Rating');
+                        $('#btn_rating').attr('disabled', false);
+                        toastr.error(response.message);
+                        $('#errList').html("");
+                        $('#errList').addClass('alert alert-danger');
+                        $.each(response.errors, function(key, err_values) {
+                            $('#errList').append('<div>' + err_values + '</div>');
+                        });
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        });
     </script>
 @endsection

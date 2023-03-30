@@ -70,5 +70,6 @@ Route::controller(FEController::class)->group(function(){
     Route::get('/daftar-ptn','daftar_ptn');
     Route::get('/my-info','my_info');
     Route::post('/submit-data-siswa','submit_data_siswa');
-    Route::post('/pilih-univ','pilih_univ');
+    Route::post('/pilih-ptn','pilih_univ');
+    Route::post('/proses-rating','proses_rating');
 }); 

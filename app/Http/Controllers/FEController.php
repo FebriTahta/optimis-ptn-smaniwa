@@ -5,6 +5,7 @@ use App\Models\Univ;
 use App\Models\Jurusan;
 use App\Models\Siswa;
 use App\Models\User;
+use App\Models\Rating;
 use App\Models\Pilih;
 use Validator;
 use Illuminate\Http\Request;
@@ -144,9 +145,9 @@ class FEController extends Controller
     public function pilih_univ(Request $request)
     {
         $pilihan = Pilih::where('univ_id', $request->univ_id)->where('jurusan_id',$request->jurusan_id)
-        ->where('siswa_id', auth()->user()->siswa->id,);
+        ->where('siswa_id', auth()->user()->siswa->id)->get();
 
-        if ($pilihan == null) {
+        if ($pilihan->count() == 0) {
             # code...
             $siswa = Siswa::where('id', auth()->user()->siswa->id,)->first();
             if ($siswa->pilih->count() < 2) {
@@ -183,6 +184,109 @@ class FEController extends Controller
                 ]
             );
         }
+    }
+
+    public function proses_rating(Request $request)
+    {
+        $siswa = auth()->user()->siswa;
+        $univ  = Univ::find($request->univ_id);
+        $rating = Rating::where('univ_id',$request->univ_id)->where('jurusan_id',$request->jurusan_id)
+        ->where('siswa_id',$siswa->id)->first();
+
+        $akreditasi = 10;
+        $kkm = 10;
+        $nilai;
+        if ($siswa->siswa_nilai > 74 && $siswa->siswa_nilai < 81) {
+            $nilai = 10;
+        }elseif($siswa->siswa_nilai > 80 && $siswa->siswa_nilai < 91){
+            $nilai = 15;
+        }elseif($siswa->siswa_nilai > 90 && $siswa->siswa_nilai < 96){
+            $nilai = 20;
+        }elseif ($siswa->siswa_nilai > 95 && $siswa->siswa_nilai <= 100) {
+            $nilai = 25;
+        }else {
+            $nilai = 0;
+        }
+
+        $ranking;
+        if ($siswa->siswa_ranking == 1) {
+            $ranking = 10;
+        }elseif($siswa->siswa_ranking == 2){
+            $ranking = 7;
+        }elseif($siswa->siswa_ranking == 3){
+            $ranking = 5;
+        }else {
+            $ranking = 0;
+        }
+
+        $sertifikat;
+        if ($siswa->siswa_sertifikat > 0 && $siswa->siswa_sertifikat <= 3) {
+            $sertifikat = 7;
+        }elseif($siswa->siswa_sertifikat > 3 && $siswa->siswa_sertifikat <= 5){
+            $sertifikat = 15;
+        }elseif($siswa->siswa_sertifikat > 5){
+            $sertifikat = 20;
+        }else {
+            $sertifikat = 0;
+        }
+
+        $domisili;
+        if ($siswa->kota == $univ->kota->kota_name) {
+            $domisili = 10;
+        }else {
+            $domisili = 5;
+        }
+
+        $linjur;
+        if ($request->linjur == 'linjur') {
+            $linjur = 5;
+        }else {
+            $linjur = 10;
+        }
+
+        $alumni;
+        if ($univ->univ_alumni > 0 && $siswa->siswa_sertifikat <= 5) {
+            $alumni = 5;
+        }elseif($univ->univ_alumni > 5 && $siswa->siswa_sertifikat <= 10){
+            $alumni = 10;
+        }elseif($univ->univ_alumni > 10){
+            $alumni = 15;
+        }else {
+            $alumni = 0;
+        }
+
+        $score = $akreditasi + $kkm + $nilai + $ranking + $sertifikat + $linjur + $domisili + $alumni;
+
+        $data = Rating::updateOrCreate(
+            [
+                'univ_id'=> $request->univ_id,
+                'jurusan_id'=> $request->jurusan_id,
+                'siswa_id'=> $siswa->id,
+            ],[
+                'univ_id'=> $request->univ_id,
+                'jurusan_id'=> $request->jurusan_id,
+                'siswa_id'=> $siswa->id,
+                'kelas'=> $siswa->nama_kelas,
+                'jurusan'=> $siswa->jurusan_kelas,
+                'angkatan'=> $siswa->angkatan,
+                'akreditasi'=> $akreditasi,
+                'kkm'=> $kkm,
+                'nilai'=> $nilai,
+                'ranking'=> $ranking,
+                'sertifikat'=> $sertifikat,
+                'linjur'=> $linjur,
+                'domisili'=> $domisili,
+                'alumni' => $alumni,
+                'score'=> $score
+            ]
+        );
+
+        return response()->json(
+            [
+                'status'=> 200,
+                'message'=> 'Rating berhasil dijalankan'
+            ]
+        );
     }
 
 }

@@ -29,4 +29,9 @@ class Univ extends Model
     {
         return $this->hasMany(Pilih::class);
     }
+
+    public function rating()
+    {
+        return $this->hasMany(Rating::class);
+    }
 }
