@@ -89,9 +89,9 @@
 <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- COMMON SCRIPTS -->
-<script src="{{ asset('fe_assets/js/common_scripts.min.js') }}"></script>
+{{-- <script src="{{ asset('fe_assets/js/common_scripts.min.js') }}"></script>
 <script src="{{ asset('fe_assets/js/common_func.js') }}"></script>
-<script src="{{ asset('fe_assets/assets/validate.js') }}"></script>
+<script src="{{ asset('fe_assets/assets/validate.js') }}"></script> --}}
 
 <!-- SPECIFIC SCRIPTS -->
 <script src="{{ asset('fe_assets/js/sticky_sidebar.min.js') }}"></script>

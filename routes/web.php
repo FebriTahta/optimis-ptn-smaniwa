@@ -74,4 +74,7 @@ Route::controller(FEController::class)->group(function(){
     Route::post('/proses-rating','proses_rating');
     Route::get('/my-choice','my_choice');
     Route::post('/hapus-ptn-pilihan','hapus_ptn_pilihan');
+    Route::get('/daftar-ptn-filter-jurusan/{jurusan}','filter_jurusan');
+    Route::get('/daftar-ptn-filter-ptn/{ptn}','filter_ptn');
+    Route::get('/daftar-ptn-search/{ptn}','search_ptn');
 }); 

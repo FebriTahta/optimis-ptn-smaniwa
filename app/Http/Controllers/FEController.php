@@ -44,7 +44,7 @@ class FEController extends Controller
 
     public function daftar_ptn()
     {
-        $univ = Univ::paginate(2);
+        $univ = Univ::paginate(10);
         $jurusan = Jurusan::get();
         $bagian1 = round($jurusan->count() / 2);
         $bagian2 = $jurusan->count() - $bagian1;
@@ -350,6 +350,156 @@ class FEController extends Controller
             }
 
         }
+    }
+
+    public function filter_jurusan($jurusan)
+    {
+        $decode = base64_decode($jurusan);
+        $id = explode(',',$decode);
+        // $data = Jurusan::whereIn('id',$id)->get();
+
+        $data = Univ::whereHas('jurusan',function($q) use ($id){
+            $q->whereIn('jurusan_id',$id);
+        })->with('jurusan',function($q) use ($id){
+            $q->whereIn('jurusan_id',$id);
+        })
+        ->paginate(10);
+
+        $univ = Univ::paginate(10);
+        $jurusan = Jurusan::get();
+        $bagian1 = round($jurusan->count() / 2);
+        $bagian2 = $jurusan->count() - $bagian1;
+
+        $jurusan_id  = [];
+        $jurusan_id2 = [];
+        foreach ($jurusan as $key => $value) {
+            # code...
+            if ($key >= $bagian1) {
+                # code...
+                $jurusan_id[] = $value->id;
+            }
+        }
+
+        foreach ($jurusan as $key2 => $value2) {
+            # code...
+            if ($key2 <= $bagian2) {
+                # code...
+                $jurusan_id2[] = $value2->id;
+            }
+        }
+        
+        $jurusan_ = Jurusan::whereIn('id',$jurusan_id)->get();
+        $jurusan_2= Jurusan::whereIn('id',$jurusan_id2)->get();
+
+        $kelengkapan;
+        
+        if (auth()->user()->siswa == null || auth()->user()->siswa->angkatan == null ||
+        auth()->user()->siswa->nama_kelas == null || auth()->user()->siswa->jurusan_kelas == null
+        || auth()->user()->siswa->kota == null || auth()->user()->siswa->siswa_ranking == null || 
+        auth()->user()->siswa->siswa_sertifikat == null || auth()->user()->siswa->siswa_nilai == null) {
+            # code...
+            $kelengkapan = 'not';
+        }else {
+            # code...
+            $kelengkapan = 'yes';
+        }
+
+        $filter_jurusan = Jurusan::whereIn('id',$id)->get();
+
+        return view('fe_page.daftar_ptn_filter_jurusan',compact('filter_jurusan','univ','jurusan_','jurusan_2','kelengkapan','data'));
+    }
+
+    public function filter_ptn($ptn)
+    {
+        $id = base64_decode($ptn);
+        $filter_ptn = Univ::find($id);
+        $univ = Univ::paginate(10);
+        $jurusan = Jurusan::get();
+        $bagian1 = round($jurusan->count() / 2);
+        $bagian2 = $jurusan->count() - $bagian1;
+
+        $jurusan_id  = [];
+        $jurusan_id2 = [];
+        foreach ($jurusan as $key => $value) {
+            # code...
+            if ($key >= $bagian1) {
+                # code...
+                $jurusan_id[] = $value->id;
+            }
+        }
+
+        foreach ($jurusan as $key2 => $value2) {
+            # code...
+            if ($key2 <= $bagian2) {
+                # code...
+                $jurusan_id2[] = $value2->id;
+            }
+        }
+        
+        $jurusan_ = Jurusan::whereIn('id',$jurusan_id)->get();
+        $jurusan_2= Jurusan::whereIn('id',$jurusan_id2)->get();
+
+        $kelengkapan;
+        
+        if (auth()->user()->siswa == null || auth()->user()->siswa->angkatan == null ||
+        auth()->user()->siswa->nama_kelas == null || auth()->user()->siswa->jurusan_kelas == null
+        || auth()->user()->siswa->kota == null || auth()->user()->siswa->siswa_ranking == null || 
+        auth()->user()->siswa->siswa_sertifikat == null || auth()->user()->siswa->siswa_nilai == null) {
+            # code...
+            $kelengkapan = 'not';
+        }else {
+            # code...
+            $kelengkapan = 'yes';
+        }
+
+        return view('fe_page.daftar_ptn_filter_ptn',compact('filter_ptn','univ','jurusan_','jurusan_2','kelengkapan'));
+    }
+
+    public function search_ptn($ptn)
+    {
+        $name = base64_decode($ptn);
+        $search_ptn = Univ::where('univ_name','LIKE','%'.$name.'%')
+        ->paginate(10);
+        $univ = Univ::paginate(10);
+        $jurusan = Jurusan::get();
+        $bagian1 = round($jurusan->count() / 2);
+        $bagian2 = $jurusan->count() - $bagian1;
+
+        $jurusan_id  = [];
+        $jurusan_id2 = [];
+        foreach ($jurusan as $key => $value) {
+            # code...
+            if ($key >= $bagian1) {
+                # code...
+                $jurusan_id[] = $value->id;
+            }
+        }
+
+        foreach ($jurusan as $key2 => $value2) {
+            # code...
+            if ($key2 <= $bagian2) {
+                # code...
+                $jurusan_id2[] = $value2->id;
+            }
+        }
+        
+        $jurusan_ = Jurusan::whereIn('id',$jurusan_id)->get();
+        $jurusan_2= Jurusan::whereIn('id',$jurusan_id2)->get();
+
+        $kelengkapan;
+        
+        if (auth()->user()->siswa == null || auth()->user()->siswa->angkatan == null ||
+        auth()->user()->siswa->nama_kelas == null || auth()->user()->siswa->jurusan_kelas == null
+        || auth()->user()->siswa->kota == null || auth()->user()->siswa->siswa_ranking == null || 
+        auth()->user()->siswa->siswa_sertifikat == null || auth()->user()->siswa->siswa_nilai == null) {
+            # code...
+            $kelengkapan = 'not';
+        }else {
+            # code...
+            $kelengkapan = 'yes';
+        }
+
+        return view('fe_page.daftar_ptn_search_ptn',compact('name','search_ptn','univ','jurusan_','jurusan_2','kelengkapan'));
     }
 
 }

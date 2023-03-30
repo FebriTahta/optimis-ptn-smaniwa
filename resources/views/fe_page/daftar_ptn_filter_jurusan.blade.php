@@ -7,8 +7,22 @@
 @section('content_siswa')
     <main class="bg_color" style="transform: none;">
         <div class="container margin_detail" style="transform: none;">
+
             <div class="row" style="transform: none;">
                 <div class="col-lg-4">
+                    <div class="box_general">
+                        <div class="main_info_wrapper">
+                            <div class="main_info clearfix">
+                                <p style="color: blue">Menampilkan ({{ count($data) }}) daftar PTN berdasarkan Filter <br>
+                                    <u><a href="/daftar-ptn">klik disini untuk menghapus filter</a></u>
+                                    </p>
+                                    @foreach ($filter_jurusan as $key => $fj)
+                                        <span style="color: blue">{{ $key+1 }}. {{ $fj->jurusan_name }}</span><br>
+                                    @endforeach
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="box_general">
                         <div class="main_info_wrapper">
                             <div class="main_info clearfix">
@@ -102,7 +116,7 @@
 	                                </div>
 	                                <div id="collapse-A" class="collapse" role="tabpanel" aria-labelledby="heading-A">
 	                                    <div class="card-body info_content">
-                                            @foreach ($univ as $item)
+                                            @foreach ($data as $item)
                                             <div class="indent_title_in">
 	                                            <i class="icon_document_alt"></i>
 	                                            <h3>{{ $item->univ_name }}</h3>
@@ -135,7 +149,6 @@
                                             <hr>
                                             @endforeach
                                             {{ $univ->links('fe_page.pagination') }}
-                                            
 	                                    </div>
 	                                </div>
 	                            </div>
@@ -301,8 +314,6 @@
             my_choice();
         });
 
-        
-
         function my_choice() {
             $.ajax({
                 type: 'GET',
@@ -447,13 +458,6 @@
             window.location.href = "/daftar-ptn-filter-ptn/" + enc;
         })
 
-        function search(ptn) {
-            if(event.key === 'Enter') {
-                var enc = btoa(ptn.value);
-                window.location.href = "/daftar-ptn-search/" + enc;    
-            }
-        }
-
         function GetSelected() {
             //Create an Array.
             var selected = new Array();
@@ -474,6 +478,13 @@
                 var enc = btoa(jurusan);
                 window.location.href = "/daftar-ptn-filter-jurusan/" + enc;
                 // alert("Selected values: " + selected.join(","));
+            }
+        }
+
+        function search(ptn) {
+            if(event.key === 'Enter') {
+                var enc = btoa(ptn.value);
+                window.location.href = "/daftar-ptn-search/" + enc;    
             }
         }
     </script>

@@ -12,6 +12,16 @@
                     <div class="box_general">
                         <div class="main_info_wrapper">
                             <div class="main_info clearfix">
+                                <p style="color: blue">Menampilkan PTN berdasarkan Filter <br>
+                                    <u><a href="/daftar-ptn">klik disini untuk menghapus filter</a></u>
+                                </p>
+                                <span style="color: blue">1. {{ $filter_ptn->univ_name }}</span><br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box_general">
+                        <div class="main_info_wrapper">
+                            <div class="main_info clearfix">
                                 <div class="user_thumb">
                                     <figure>
                                         {{-- img --}}
@@ -102,22 +112,21 @@
 	                                </div>
 	                                <div id="collapse-A" class="collapse" role="tabpanel" aria-labelledby="heading-A">
 	                                    <div class="card-body info_content">
-                                            @foreach ($univ as $item)
                                             <div class="indent_title_in">
 	                                            <i class="icon_document_alt"></i>
-	                                            <h3>{{ $item->univ_name }}</h3>
-	                                            <p>{{ $item->kota->kota_name }}</p>
+	                                            <h3>{{ $filter_ptn->univ_name }}</h3>
+	                                            <p>{{ $filter_ptn->kota->kota_name }}</p>
 	                                        </div>
-	                                        <div class="wrapper_indent add_bottom_25">
+                                            <div class="wrapper_indent add_bottom_25">
 	                                            <p>Pilih daftar jurusan yang tersedia berikut ini</p>
 	                                            <h6>Jurusan</h6>
                                                 @if (auth()->user()->siswa !== null)
                                                     <ul class="bullets">
-                                                        @foreach ($item->jurusan as $j)
+                                                        @foreach ($filter_ptn->jurusan as $j)
                                                             <li>
                                                                 <strong>{{ $j->jurusan_name }}</strong> - 
-                                                                <a type="button" id="pilih{{ $item->id }}{{ $j->id }}" style="border: none; background: transparent; color: red"
-                                                                onclick="pilih({{ $item->id }},{{ $j->id }})"><u>PILIH</u></a>
+                                                                <a type="button" id="pilih{{ $filter_ptn->id }}{{ $j->id }}" style="border: none; background: transparent; color: red"
+                                                                onclick="pilih({{ $filter_ptn->id }},{{ $j->id }})"><u>PILIH</u></a>
                                                             </li>
                                                         @endforeach
                                                     </ul>
@@ -131,10 +140,6 @@
                                                     </ul>
                                                 @endif
 	                                        </div>
-	                                        <!--  End wrapper indent -->
-                                            <hr>
-                                            @endforeach
-                                            {{ $univ->links('fe_page.pagination') }}
                                             
 	                                    </div>
 	                                </div>
@@ -301,8 +306,6 @@
             my_choice();
         });
 
-        
-
         function my_choice() {
             $.ajax({
                 type: 'GET',
@@ -315,6 +318,7 @@
                                 $('#pilih'+dt.univ_id+dt.jurusan_id).html('TELAH DIPILIH');
                                 document.getElementById("pilih"+dt.univ_id+dt.jurusan_id).style.color = "blue";
                             }
+                            
                         });
                     }else{
                         toastr.error(response.message);

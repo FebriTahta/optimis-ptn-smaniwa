@@ -10,13 +10,13 @@
         </div>
         <a href="#collapseFilters" data-toggle="collapse" class="btn_filters"><i class="icon_adjust-vert"></i><span>Filters</span></a>
         <div class="search_bar_list">
-            <input type="text" class="form-control" placeholder="Search again...">
+            <input type="text" class="form-control" id="search_ptn" onkeydown="search(this)" placeholder="Search Nama PTN...">
         </div>
         <a class="btn_search_mobile btn_filters" data-toggle="collapse" href="#collapseSearch"><i class="icon_search"></i></a>
     </div>
     <div class="collapse filters_2" id="collapseFilters">
     <div class="container margin_detail">
-        <div class="row">
+        <div class="row" id="ref">
             <div class="col-md-4">
                 <div class="filter_type">
                     <h6>Jurusan</h6>
@@ -24,7 +24,7 @@
                         @foreach ($jurusan_ as $item)
                         <li>
                             <label class="container_check">{{ $item->jurusan_name }}
-                                <input type="checkbox">
+                                <input type="checkbox" name="jurusan[]" class="checkjurusan" value="{{ $item->id }}">
                                 <span class="checkmark"></span>
                             </label>
                         </li>
@@ -39,7 +39,7 @@
                         @foreach ($jurusan_2 as $item2)
                         <li>
                             <label class="container_check">{{ $item2->jurusan_name }}
-                                <input type="checkbox">
+                                <input type="checkbox" name="jurusans[]" class="checkjurusan" value="{{ $item2->id }}">
                                 <span class="checkmark"></span>
                             </label>
                         </li> 
@@ -51,7 +51,7 @@
                 <div class="filter_type">
                     <h6>Note :</h6>
                     <div class="range_input">Pilih salah satu atau beberapa data jurusan yang tersedia berikut ini</div>
-                    <a href="#" class="btn_1">Pilih</a>
+                    <a onclick="GetSelected()" type="button" class="btn_1">Pilih</a>
                 </div>
             </div>
         </div>
