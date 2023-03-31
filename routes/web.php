@@ -77,4 +77,5 @@ Route::controller(FEController::class)->group(function(){
     Route::get('/daftar-ptn-filter-jurusan/{jurusan}','filter_jurusan');
     Route::get('/daftar-ptn-filter-ptn/{ptn}','filter_ptn');
     Route::get('/daftar-ptn-search/{ptn}','search_ptn');
+    Route::get('/daftar-siswa-mengambil-ptn/{ptn}/{jurusan}','daftar_siswa_ptn');
 }); 

@@ -502,4 +502,45 @@ class FEController extends Controller
         return view('fe_page.daftar_ptn_search_ptn',compact('name','search_ptn','univ','jurusan_','jurusan_2','kelengkapan'));
     }
 
+    public function daftar_siswa_ptn($ptn,$jurusan)
+    {
+        $id = base64_decode($ptn);
+        $ptn_ini = Univ::find($id);
+
+        $id2 = base64_decode($jurusan);
+        $jurusan_ini = Jurusan::find($id2);
+
+        $univ = Univ::get();
+
+        $jurusan = Jurusan::get();
+        $bagian1 = round($jurusan->count() / 2);
+        $bagian2 = $jurusan->count() - $bagian1;
+
+        $jurusan_id  = [];
+        $jurusan_id2 = [];
+        foreach ($jurusan as $key => $value) {
+            # code...
+            if ($key >= $bagian1) {
+                # code...
+                $jurusan_id[] = $value->id;
+            }
+        }
+
+        foreach ($jurusan as $key2 => $value2) {
+            # code...
+            if ($key2 <= $bagian2) {
+                # code...
+                $jurusan_id2[] = $value2->id;
+            }
+        }
+        
+        $jurusan_ = Jurusan::whereIn('id',$jurusan_id)->get();
+        $jurusan_2= Jurusan::whereIn('id',$jurusan_id2)->get();
+
+        $rating = Rating::where('univ_id', $ptn_ini->id)->where('jurusan_id',$jurusan_ini->id)
+        ->where('angkatan',auth()->user()->siswa->angkatan)->orderBy('score','desc')->paginate(50);
+
+        return view('fe_page.daftar_siswa_ptn_sama',compact('ptn_ini','jurusan_ini','univ','jurusan_','jurusan_2','rating','jurusan'));
+    }
+
 }

@@ -174,7 +174,6 @@
                                                                         <h4>"Oops!!"</h4>
                                                                         <p>Rating belum dijalankan untuk <br>{{ $p->univ->univ_name }} - {{ $p->jurusan->jurusan_name }}</p>
                                                                         <ul>
-                                                                            <li><a href="#0"><i class="icon_book"></i><span>DAFTAR SISWA</span></a></li>
                                                                             <li><a href="#0" data-toggle="modal" data-target="#modalhapus" data-id="{{ $p->id }}"><i class="icon_dislike"></i><span>HAPUS PTN</span></a></li>
                                                                             <li><a href="#0" data-toggle="modal" data-target="#mymodal" 
                                                                                 data-univ_id="{{ $p->univ_id }}" data-jurusan_id="{{ $p->jurusan_id }}" data-kota="{{ $p->univ->kota->kota_name }}"
@@ -196,7 +195,7 @@
                                                                                 Tetap semangat dan jangan menyerah, sukses bisa datang dari mana saja..!!</p>
                                                                         @endif
                                                                         <ul>
-                                                                            <li><a href="#0"><i class="icon_book"></i><span>DAFTAR SISWA</span></a></li>
+                                                                            <li><a href="#0" onclick="daftar_siswa({{ $p->univ_id }},{{ $p->jurusan_id }})"><i class="icon_book"></i><span>DAFTAR SISWA</span></a></li>
                                                                             <li><a href="#0" data-toggle="modal" data-target="#modalhapus" data-id="{{ $p->id }}"><i class="icon_dislike"></i><span>HAPUS PTN</span></a></li>
                                                                             <li><a href="#0" data-toggle="modal" data-target="#mymodal" 
                                                                                 data-univ_id="{{ $p->univ_id }}" data-jurusan_id="{{ $p->jurusan_id }}" data-kota="{{ $p->univ->kota->kota_name }}"
@@ -223,8 +222,6 @@
                                                     Update Data Anda Terlebih Dahulu
                                                 </div>
                                                 @endif
-                                                
-	                                            
 	                                            <!-- /review_card -->
 	                                        </div>
 	                                        <!-- /reviews -->
@@ -293,6 +290,7 @@
             </form>
         </div>
     </div>
+
 @endsection
 
 @section('fe_script')
@@ -451,6 +449,15 @@
             if(event.key === 'Enter') {
                 var enc = btoa(ptn.value);
                 window.location.href = "/daftar-ptn-search/" + enc;    
+            }
+        }
+
+        function daftar_siswa(ptn,jurusan)
+        {
+            if (ptn && jurusan) {
+                ptn_id = btoa(ptn);
+                jurusan_id = btoa(jurusan);
+                window.location.href = "/daftar-siswa-mengambil-ptn/"+ptn_id+"/"+jurusan_id;
             }
         }
 
