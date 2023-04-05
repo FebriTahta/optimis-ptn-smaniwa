@@ -4,6 +4,7 @@ use App\Http\Controllers\PtnController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\FEController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,6 +61,16 @@ Route::group(['middleware' => ['auth', 'CheckRole:admin']], function () {
         Route::get('/generate-user-and-siswa','generate_user_and_siswa');
         Route::post('/admin-update-siswa','update_siswa');
         Route::get('/admin-siswa-export','export_siswa'); 
+
+        Route::post('/admin-hapus-siswa','hapus_siswa');
+    });
+
+    Route::controller(UserController::class)->group(function(){
+        Route::get('/admin-daftar-user','daftar_user');
+        Route::get('/total-user','total_user');
+        Route::post('/admin-add-user','add_user');
+        Route::post('/admin-hapus-user','hapus_user');
+        Route::post('/admin-import-user','import_user');
     });
 });
 

@@ -10,6 +10,8 @@ use App\Models\Angkatan;
 use App\Models\Kelas;
 use App\Models\Univ;
 use App\Models\User;
+use App\Models\Rating;
+use App\Models\Pilih;
 use App\Exports\SiswaExport;
 use Illuminate\Support\Facades\Hash;
 use DataTables;
@@ -41,87 +43,39 @@ class SiswaController extends Controller
     {
         if ($request->ajax()) {
             # code...
-            $data = Siswa::with(['tipekelas','kelas','angkatan'])->get();
+            $data = Siswa::get();
             return DataTables::of($data)
-            ->addColumn('jurusan', function($data){
-                if ($data->tipekelas) {
-                    # code...
-                    return $data->detailsiswa->tipekelas->tipekelas_name;
-                }
-                return '-';
-            })
-            ->addColumn('kelas', function($data){
-                if ($data->kelas) {
-                    # code...
-                    return $data->detailsiswa->kelas->kelas_name;
-                }
-                return '-';
-            })
-            ->addColumn('angkatan', function($data){
-                if ($data->angkatan) {
-                    # code...
-                    return $data->detailsiswa->angkatan->angkatan_name;
-                }
-                return '-';
-            })
-            ->addColumn('kota', function($data){
-                if ($data->kota) {
-                    # code...
-                    return $data->detailsiswa->kota->kota_name;
-                }
-                return '-';
-            })
-            
             ->addColumn('opsi', function($data) {
-                $btn  = ' <button class="btn btn-sm btn-danger" data-id="'.$data->id.'"
-                data-toggle="modal" data-target="#modaldel"><i style="margin-left: 15px" class="fa fa-trash"></i></button>';
-                $btn .= ' <button class="btn btn-sm btn-info" data-id="'.$data->id.'" data-toggle="modal" data-target="#modaledit"><i style="margin-left: 15px" class="fa fa-edit"></i></button>';
+                $btn  = ' <button class="btn btn-sm btn-danger" data-id="'.$data->id.'" 
+                data-toggle="modal" data-target="#modalhapus"><i style="margin-left: 15px" class="fa fa-trash"></i></button>';
+                $btn .= ' <button class="btn btn-sm btn-info" data-id="'.$data->id.'" 
+                data-siswa_name="'.$data->siswa_name.'"
+                data-angkatan="'.$data->angkatan.'" data-jurusan_kelas="'.$data->jurusan_kelas.'" data-kota="'.$data->kota.'" data-nama_kelas="'.$data->nama_kelas.'"
+                data-siswa_nisn="'.$data->siswa_nisn.'" data-siswa_ranking="'.$data->siswa_ranking.'" data-siswa_sertifikat="'.$data->siswa_sertifikat.'" data-siswa_nilai="'.$data->siswa_nilai.'"
+                data-toggle="modal" data-target="#modaledit"><i style="margin-left: 15px" class="fa fa-edit"></i></button>';
                 return $btn;
             })
-            ->rawColumns(['angkatan','opsi','kelas','jurusan','kota','siswa_ranking','siswa_sertifikat','siswa_nilai'])
+            ->rawColumns(['opsi'])
             ->make(true);
         }
     }
 
     public function update_siswa(Request $request)
     {
-        $siswa = Siswa::where('id', $request->id)->first();
-        $user  = User::where('name', $siswa->nama)->where('pass',$siswa->nisn)->first();
-        
-        $tipekelas = Tipekelas::where('tipekelas_name', $request->jurusan)->first();
-        if ($tipekelas == null) {
-            # code...
-            $jurusan = [
-                'tipekelas_name'=> $request->jurusan
-            ];
-            $jurusan = Tipekelas::create($jurusan);
-            $tipekelas = $jurusan;
-        }
-
-        $kota = Kota::where('kota_name', $request->kota)->first();
-        if ($kota == null) {
-            # code...
-            $k = [
-                'provinsi_id'=> null,
-                'kota_name'=>$request->kota,
-            ];
-            $k = Kota::create($k);
-            $kota = $k;
-        }
-
         $data = Siswa::updateOrCreate(
             [
                 'id'=> $request->id,
             ],
             [
-                'user_id' => $user->id,
-                'tipekelas_id'=> $tipekelas->id,
-                'kota_id'=> $kota->id,
+                'angkatan'=> $request->angkatan,
+                'nama_kelas'=> $request->nama_kelas,
+                'jurusan_kelas'=> $request->jurusan_kelas,
+                'kota'=> $request->kota,
                 'siswa_nisn' => $request->siswa_nisn,
                 'siswa_name' => $request->siswa_name,
-                'siswa_ranking'=> $request->ranking,
-                'siswa_sertifikat'=> $request->sertifikat,
-                'siswa_nilai'=> $request->nilai,
+                'siswa_ranking'=> $request->siswa_ranking,
+                'siswa_sertifikat'=> $request->siswa_sertifikat,
+                'siswa_nilai'=> $request->siswa_nilai,
             ]
         );
 
@@ -197,5 +151,27 @@ class SiswaController extends Controller
         User::create($admin);
         // return User::count();
         return redirect()->back();
+    }
+
+    public function hapus_siswa(Request $request)
+    {
+        $siswa = Siswa::find($request->id);
+        if (count($siswa->pilih) > 0) {
+            # code...
+            Pilih::where('siswa_id', $siswa->id)->delete();
+        }
+
+        if (count($siswa->rating) > 0) {
+            # code...
+            Rating::where('siswa_id', $siswa->id)->delete();
+        }
+
+        $siswa->user->delete();
+        $siswa->delete();
+
+        return response()->json([
+            'status'=>200,
+            'message'=> 'siswa has been deleted'
+        ]);
     }
 }

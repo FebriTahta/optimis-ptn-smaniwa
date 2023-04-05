@@ -100,35 +100,59 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <input type="hidden" class="form-control" id="c_siswa" name="c_siswa" required>
-                            <div class="col-md-12">
+                            <input type="hidden" class="form-control" id="id" name="id" required>
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Nilai</label>
-                                    <input type="number" class="form-control" name="nilai" required>
+                                    <label>Nama Siswa</label>
+                                    <input type="text" class="form-control" name="siswa_name" id="siswa_name" required>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Ranking</label>
-                                    <input type="number" class="form-control" name="ranking" required>
+                                    <label>NISN</label>
+                                    <input type="number" class="form-control" name="siswa_nisn" id="siswa_nisn" required>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Sertifikat</label>
-                                    <input type="number" class="form-control" name="sertifikat" required>
+                                    <label>Kelas</label>
+                                    <input type="text" class="form-control" name="nama_kelas" id="nama_kelas" required>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Jurusan</label>
-                                    <input type="text" class="form-control" name="jurusan" required>
+                                    <input type="text" class="form-control" name="jurusan_kelas" id="jurusan_kelas" required>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Angkatan</label>
+                                    <input type="number" class="form-control" name="angkatan" id="angkatan" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Kota</label>
-                                    <input type="text" class="form-control" name="kota" required>
+                                    <input type="text" class="form-control" name="kota" id="kota" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Ranking</label>
+                                    <input type="number" class="form-control" name="siswa_ranking" id="siswa_ranking" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Nilai</label>
+                                    <input type="number" class="form-control" name="siswa_nilai" id="siswa_nilai" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Sertifikat</label>
+                                    <input type="number" class="form-control" name="siswa_sertifikat" id="siswa_sertifikat" required>
                                 </div>
                             </div>
                         </div>
@@ -136,6 +160,33 @@
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                         <input type="submit" class="btn btn-primary" value="Update" id="btnedit">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalhapus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="formhapus" enctype="multipart/form-data" method="POST">@csrf
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: red">
+                        <h5 class="modal-title" id="exampleModalLabel" style="color: white">Hapus User?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <code>Apakah yakin akan menghapus user tersebut ? <br>
+                            seluruh data yang berhubungan dengan user tersebut juga akan ikut terhapus</code>
+                            <input type="hidden" class="form-control" placeholder="id" name="id" id="id" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <input type="submit" id="btnhapus" class="btn btn-sm btn-danger" value="HAPUS">
                     </div>
                 </div>
             </form>
@@ -157,9 +208,26 @@
         $('#modaledit').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget)
             var id = button.data('id')
+            var kota = button.data('kota')
+            var angkatan = button.data('angkatan')
+            var nama_kelas = button.data('nama_kelas')
+            var jurusan_kelas = button.data('jurusan_kelas')
+            var siswa_name = button.data('siswa_name')
+            var siswa_nisn = button.data('siswa_nisn')
+            var siswa_ranking = button.data('siswa_ranking')
+            var siswa_sertifikat = button.data('siswa_sertifikat')
+            var siswa_nilai = button.data('siswa_nilai')
             var modal = $(this)
-            modal.find('.modal-body #c_siswa').val(id);
-            alert(id)
+            modal.find('.modal-body #id').val(id);
+            modal.find('.modal-body #kota').val(kota);
+            modal.find('.modal-body #angkatan').val(angkatan);
+            modal.find('.modal-body #nama_kelas').val(nama_kelas);
+            modal.find('.modal-body #jurusan_kelas').val(jurusan_kelas);
+            modal.find('.modal-body #siswa_name').val(siswa_name);
+            modal.find('.modal-body #siswa_nisn').val(siswa_nisn);
+            modal.find('.modal-body #siswa_ranking').val(siswa_ranking);
+            modal.find('.modal-body #siswa_sertifikat').val(siswa_sertifikat);
+            modal.find('.modal-body #siswa_nilai').val(siswa_nilai);
         })
 
         $('#formupdate').submit(function(e) {
@@ -180,7 +248,7 @@
                     if (response.status == 200) {
                         $('#btnedit').val('Update');
                         $('#btnedit').attr('disabled', false);
-                        // $('#modaledit').hide();
+                        $('#modaledit').modal('hide');
                         var oTable = $('#example').dataTable();
                         oTable.fnDraw(false);
                         
@@ -225,12 +293,12 @@
                         name: 'siswa_nisn'
                     }, 
                     {
-                        data: 'kelas',
-                        name: 'keals'
+                        data: 'nama_kelas',
+                        name: 'nama_kelas'
                     },
                     {
-                        data: 'jurusan',
-                        name: 'jurusan'
+                        data: 'jurusan_kelas',
+                        name: 'jurusan_kelas'
                     },
                     {
                         data: 'angkatan',
@@ -271,5 +339,53 @@
                 }
             });
         }
+
+        $('#modalhapus').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+            var modal = $(this)
+            modal.find('.modal-body #id').val(id);
+            })
+
+            $('#formhapus').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    type: 'POST',
+                    url: "/admin-hapus-siswa",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $('#btnhapus').attr('disabled', 'disabled');
+                        $('#btnhapus').val('Process...');
+                    },
+                    success: function(response) {
+                        if (response.status == 200) {
+                            var table = $('#example').DataTable();
+                            table.ajax.reload();
+                            $('#modalhapus').modal('hide');
+                            $("#formhapus")[0].reset();
+                            $('#btnhapus').val('HAPUS');
+                            $('#btnhapus').attr('disabled', false);
+                            toastr.success(response.message);
+                            total();
+                        } else {
+                            $('#btnhapus').val('SUBMIT!');
+                            $('#btnhapus').attr('disabled', false);
+                            toastr.error(response.message);
+                            $('#errList').html("");
+                            $('#errList').addClass('alert alert-danger');
+                            $.each(response.errors, function(key, err_values) {
+                                $('#errList').append('<div>' + err_values + '</div>');
+                            });
+                        }
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+            });
     </script>
 @endsection

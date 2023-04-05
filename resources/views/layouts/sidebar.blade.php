@@ -81,6 +81,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Utilities:</h6>
             <a class="collapse-item" href="/admin-siswa">Siswa</a>
+            <a href="/admin-daftar-user" class="collapse-item">User</a>
             {{-- <a class="collapse-item" href="utilities-animation.html">Kelas</a>
             <a class="collapse-item" href="utilities-animation.html">Jurusan</a>
             <a class="collapse-item" href="utilities-border.html">Tahun Ajaaran</a> --}}
