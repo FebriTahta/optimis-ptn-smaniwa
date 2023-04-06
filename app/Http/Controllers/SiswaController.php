@@ -15,6 +15,7 @@ use App\Models\Pilih;
 use App\Exports\SiswaExport;
 use Illuminate\Support\Facades\Hash;
 use DataTables;
+use Carbon\Carbon;
 use DB;
 use Excel;
 use App\Imports\SiswaImport;
@@ -172,6 +173,126 @@ class SiswaController extends Controller
         return response()->json([
             'status'=>200,
             'message'=> 'siswa has been deleted'
+        ]);
+    }
+
+    public function status_siswa(Request $request)
+    {
+        $periode = Siswa::select('angkatan')->orderBy('angkatan','asc')->distinct()->limit(4)->get();
+        $angkatan = [];
+        foreach ($periode as $key => $value) {
+            # code...
+            $angkatan[] = $value->angkatan;
+        }
+
+        $per = $request->periode;
+        $period;
+        if ($per == null) {
+            # code...
+            $period = date('Y');
+        }else {
+            # code...
+            $period = $request->periode;
+        }
+
+        // semua siswa angkatan tersebut
+        $data1 = DB::table('siswas')->where('angkatan',$period)
+        ->select('angkatan',DB::raw('count(*) as total'))
+        ->groupBy('angkatan')
+        ->orderBy('angkatan','asc')->get();
+        
+        // semua siswa angkatan tersebut yang sudah memilih
+        $data2 = Siswa::select('angkatan' ,DB::raw('count(*) as total2'))->whereHas('pilih')
+        ->groupBy('angkatan')->where('angkatan',$period)
+        ->orderBy('angkatan','asc')->get();
+
+        // data lolos rating
+        $data3 = Rating::where('score', '>', 84)->select('angkatan', DB::raw('count(*) as total3'))
+        ->groupBy('angkatan')->where('angkatan',$period)
+        ->orderBy('angkatan','asc')->get();
+
+        // data tidak lolos rating
+        $data4 = Rating::where('score', '<', 85)->select('angkatan', DB::raw('count(*) as total4'))
+        ->groupBy('angkatan')->where('angkatan',$period)
+        ->orderBy('angkatan','asc')->get();
+
+        $www=[];
+        $xxx=[];
+        foreach ($angkatan as $key => $value) {
+            # code...
+            $www[]= Rating::where('angkatan', $value)->where('score','<','84')->count();
+            $xxx[]= Rating::where('angkatan', $value)->where('score','>','84')->count();
+            $sss[]= Siswa::where('angkatan', $value)->count();
+            $zzz[]= Siswa::where('angkatan', $value)->whereHas('pilih')->count();
+        }
+
+        $x = [];
+        $y = [];
+        $z = [];
+        $w = [];
+        foreach ($data1 as $key => $a) {
+            # code...
+            $x[] = $a->total;
+        }
+        foreach ($data2 as $key => $b) {
+            # code...
+            $y[] = $b->total2;
+        }
+        foreach ($data3 as $key => $c) {
+            # code...
+            $z[] = $c->total3;
+        }
+        foreach ($data4 as $key => $d) {
+            # code...
+            $w[] = $d->total4;
+        }
+        
+        return response()->json([
+            'status'=>200,
+            'message'=>'grafik data siswa',
+            'data'=> [
+                'angkatan'=>$angkatan,
+                'semua_siswa'=>$sss,
+                'pilih_siswa'=>$zzz,
+                'lolos_rating'=>$xxx,
+                'tidak_lolos_rating'=>$www,
+                'periode'=>[$period]
+            ]
+        ]);
+    }
+
+    public function rating_siswa(Request $request)
+    {
+        $data = Rating::select(DB::raw('DATE_FORMAT(created_at, "%W, %d %M %y") as date'), DB::raw('count(*) as total'))
+        ->groupBy('date')
+        ->orderBy('date','desc')
+        ->limit(7)->get();
+        
+        $day = [];
+        $total = [];
+        foreach ($data as $key => $value) {
+            # code...
+            $day[]=$value->date;
+            $total[]=$value->total;
+        }
+
+        $x=[];
+        $y=[];
+        foreach ($day as $dy => $d) {
+            # code...
+            $x[] = Rating::where(DB::raw('DATE_FORMAT(created_at, "%W, %d %M %y")'), $d)->where('score','<','85')->count();
+            $y[] = Rating::where(DB::raw('DATE_FORMAT(created_at, "%W, %d %M %y")'), $d)->where('score','>','84')->count();
+        }
+        
+        return response()->json([
+            'status'=>200,
+            'message'=>'display data rating every day',
+            'data'=>[
+                'day'=>$day,
+                'total'=>$total,
+                'lolos'=>$y,
+                'tidak_lolos'=>$x
+            ]
         ]);
     }
 }

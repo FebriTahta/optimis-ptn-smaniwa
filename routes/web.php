@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth', 'CheckRole:admin']], function () {
         Route::get('/admin-siswa-export','export_siswa'); 
 
         Route::post('/admin-hapus-siswa','hapus_siswa');
+        Route::get('/admin-status-siswa','status_siswa');
+        Route::get('/admin-rating-siswa','rating_siswa');
     });
 
     Route::controller(UserController::class)->group(function(){
