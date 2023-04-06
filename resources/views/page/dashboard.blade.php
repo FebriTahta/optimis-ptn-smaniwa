@@ -249,8 +249,10 @@
     <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
     <script>
         $(document).ready(function() {
-            chart();
-            chart2();
+            // chart();
+            // chart2();
+            setInterval(chart(), 100000);
+            setInterval(chart2(), 100000);
         });
 
         function chart2() {
