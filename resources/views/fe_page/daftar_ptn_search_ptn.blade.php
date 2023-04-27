@@ -307,8 +307,10 @@
 
 @section('fe_script')
     <script>
+        var current_url;
         $(document).ready(function() {
             my_choice();
+            current_url = window.location.href;
         });
 
         function my_choice() {
@@ -374,6 +376,7 @@
                         toastr.success(response.message);
                         $('#'+response.data).html('TELAH DIPILIH');
                             document.getElementById(response.data).style.color = "blue";
+                            window.location.href = current_url;
                     }else{
                         toastr.error(response.message);
                     }
@@ -401,7 +404,7 @@
                         $('#btn_rating').val('Do Rating');
                         $('#btn_rating').attr('disabled', false);
                         toastr.success(response.message);
-                        window.location.href = "/daftar-ptn";
+                        window.location.href = current_url;
 
                     } else {
                         $('#btn_rating').val('Do Rating');
@@ -440,7 +443,7 @@
                         $('#btn_hapus').val('Hapus PTN');
                         $('#btn_hapus').attr('disabled', false);
                         toastr.success(response.message);
-                        window.location.href = "/daftar-ptn";
+                        window.location.href = current_url;
 
                     } else {
                         $('#btn_hapus').val('Hapus PTN');

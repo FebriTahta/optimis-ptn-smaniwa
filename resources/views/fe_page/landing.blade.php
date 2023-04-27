@@ -30,7 +30,16 @@
                     </li>
                 </ul>
                 <p class="add_top_30"><a href="/login" class="btn_1">Login & Pilih PTN</a>
-                    <a href="#" class="btn_1">Website Smaniwa ?</a></p>
+                    @php
+                    $link = App\Models\Link::first();
+                @endphp
+                
+                @if ($link !== null)
+                    @if ($link->link !== null && $link->link !== "")
+                      <a target="_blank" href="https://{{$link->link}}" class="btn_1">Go To {{$link->link}}</a>
+                    @endif
+                @endif
+                    </p>
             </div>
             <!-- /row -->
         </div>

@@ -57,6 +57,7 @@
                                 <th style="width: 12%">Option</th>
                             </tr>
                         </thead>
+                        <tbody style="font-size: 12px"></tbody>
                     </table>
                 </div>
             </div>
@@ -64,8 +65,7 @@
     </div>
 
     {{-- modal --}}
-    <div class="modal fade" id="modalimport" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modalimport" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form action="/admin-import-siswa" enctype="multipart/form-data" method="POST">@csrf
                 <div class="modal-content">

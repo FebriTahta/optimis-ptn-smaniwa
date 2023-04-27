@@ -19,7 +19,7 @@
         <div class="row" id="ref">
             <div class="col-md-4">
                 <div class="filter_type">
-                    <h6>Jurusan</h6>
+                    <h6>Jurusan 1</h6>
                     <ul>
                         @foreach ($jurusan_ as $item)
                         <li>
@@ -34,7 +34,7 @@
             </div>
             <div class="col-md-4">
                  <div class="filter_type">
-                    <h6>Jurusan</h6>
+                    <h6>Jurusan 2</h6>
                     <ul>
                         @foreach ($jurusan_2 as $item2)
                         <li>
@@ -61,7 +61,7 @@
 <!-- /filters -->
 <div class="collapse" id="collapseSearch">
     <div class="search_bar_list">
-        <input type="text" class="form-control" placeholder="Search again...">
+        <input type="text" class="form-control" id="search_ptn2" onkeydown="search(this)" placeholder="Search Nama PTN...">
     </div>
 </div>
 <!-- /collapseSearch -->

@@ -131,14 +131,21 @@
                         Login
                     </button>
                     <hr>
-                    <a href="#" class="btn btn-google btn-user btn-block">
-                       Go To Smaniwa Website
-                    </a>
                     {{-- <a href="index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                     </a> --}}
                   </form>
-                  <hr>
+                    @php
+                        $link = App\Models\Link::first();
+                    @endphp
+                    
+                    @if ($link !== null)
+                        @if ($link->link !== null && $link->link !== '')
+                          <a target="_blank" href="https://{{$link->link}}" class="btn btn-google btn-user btn-block">
+                              Go To {{$link->link}}
+                          </a>  
+                        @endif
+                    @endif
                   {{-- <div class="text-center">
                     <a class="small" href="forgot-password.html">Forgot Password?</a>
                   </div>

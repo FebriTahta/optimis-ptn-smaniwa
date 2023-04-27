@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Optimis PTN Panel</title>
 
   <!-- Custom fonts for this template-->
@@ -101,9 +101,9 @@
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="/admin-report">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>Report</span></a>
+          <span>Pengaturan & Report</span></a>
       </li>
 
       <!-- Nav Item - Tables -->

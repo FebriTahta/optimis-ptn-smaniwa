@@ -4,6 +4,8 @@ use App\Http\Controllers\PtnController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\FEController;
+use App\Http\Controllers\TokenWebController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +76,17 @@ Route::group(['middleware' => ['auth', 'CheckRole:admin']], function () {
         Route::post('/admin-hapus-user','hapus_user');
         Route::post('/admin-import-user','import_user');
     });
+
+    Route::controller(ReportController::class)->group(function(){
+        Route::get('/admin-report','report_index');
+        Route::get('/admin-filter/{angkatan}','report_filter');
+        Route::get('/admin-export-report/{angkatan}','export_report');
+        Route::get('/matikan-notif','matikan_notif');
+        Route::get('/aktifkan-notif','aktifkan_notif');
+
+        Route::post('/update-link','update_link');
+        Route::get('/get-link','get_link');
+    });
 });
 
 
@@ -92,3 +105,5 @@ Route::controller(FEController::class)->group(function(){
     Route::get('/daftar-ptn-search/{ptn}','search_ptn');
     Route::get('/daftar-siswa-mengambil-ptn/{ptn}/{jurusan}','daftar_siswa_ptn');
 }); 
+
+Route::post('tokenweb',TokenWebController::class);

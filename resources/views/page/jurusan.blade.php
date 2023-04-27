@@ -41,6 +41,7 @@
                                 <th style="width: 12%">Option</th>
                             </tr>
                         </thead>
+                        <tbody style="font-size: 12px"></tbody>
                     </table>
                 </div>
             </div>

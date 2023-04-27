@@ -7,6 +7,7 @@ use App\Models\Siswa;
 use App\Models\User;
 use App\Models\Rating;
 use App\Models\Pilih;
+use App\Models\Notif;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -256,7 +257,7 @@ class FEController extends Controller
         }
 
         $score = $akreditasi + $kkm + $nilai + $ranking + $sertifikat + $linjur + $domisili + $alumni;
-
+        // 
         $data = Rating::updateOrCreate(
             [
                 'univ_id'=> $request->univ_id,
@@ -267,7 +268,7 @@ class FEController extends Controller
                 'jurusan_id'=> $request->jurusan_id,
                 'siswa_id'=> $siswa->id,
                 'kelas'=> $siswa->nama_kelas,
-                'jurusan'=> $siswa->jurusan_kelas,
+                'asal_jurusan'=> $siswa->jurusan_kelas,
                 'angkatan'=> $siswa->angkatan,
                 'akreditasi'=> $akreditasi,
                 'kkm'=> $kkm,
@@ -280,6 +281,45 @@ class FEController extends Controller
                 'score'=> $score
             ]
         );
+
+         // notif table
+         Notif::create([
+            'pesan'=> $siswa->siswa_name.' - Melakukan Rating PTN '. $data->univ->univ_name.' - '.$data->jurusan->jurusan_name,
+            'status'=> 'unread',
+            'user_id'=> null
+        ]);
+
+        // tidak jadi menggunakan channel. Tinggal langsung broadcast
+        $web_token = User::where('role','admin')->whereNotNull('web_token')->pluck('web_token')->all();
+        $SERVER_API_KEY = "AAAAf7-1TE0:APA91bFyNs20dN3U9q-qEXnykmUDBOaT8xnV9nmM93yUrG01Awq_CuPP979BNfGnM-63XnqmPhnci6rrilg5-IyigjpiNI_BLxsnjTZmKHc_XY69Fq4gbvdzw3-NJpvnnYjjLm9kV_Q3";
+
+        $pesan = [
+            "registration_ids" => $web_token,
+            "notification" => [
+                "title" => $siswa->siswa_name.' - Melakukan Rating PTN',
+                "body" => $data->univ->univ_name.' - '.$data->jurusan->jurusan_name,
+                "content_available" => true,
+                "priority" => "high",
+            ]
+        ];
+        $dataString = json_encode($pesan);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);     
+
 
         return response()->json(
             [

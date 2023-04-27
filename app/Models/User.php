@@ -24,6 +24,8 @@ class User extends Authenticatable
         'role',
         'last_seen',
         'pass',
+        'fcm_token',
+        'web_token'
     ];
 
     /**
@@ -48,5 +50,16 @@ class User extends Authenticatable
     public function siswa()
     {
         return $this->hasOne(Siswa::class);
+    }
+
+    public function routeNotificationForFcm()
+    {
+        // return $this->getDeviceTokens();
+        return $this->web_token;
+    }
+
+    public function notif()
+    {
+        return $this->hasMany(Notif::class);
     }
 }
