@@ -39,6 +39,7 @@ Route::controller(PtnController::class)->group(function(){
 Route::group(['middleware' => ['auth', 'CheckRole:admin']], function () {
     Route::controller(DashboardController::class)->group(function(){
         Route::get('/admin-dashboard','index');
+        Route::get('/admin-total-data-dashboard','total_dashboard');
     });
     
     // Route::controller(PtnController::class)->group(function(){
@@ -86,6 +87,11 @@ Route::group(['middleware' => ['auth', 'CheckRole:admin']], function () {
 
         Route::post('/update-link','update_link');
         Route::get('/get-link','get_link');
+
+        // NOTIF
+        Route::get('/admin-notif','notif_index');
+        Route::get('/admin-total-notif','total_notif');
+        Route::get('/admin-mark-read-notif','mark_read_notif');
     });
 });
 

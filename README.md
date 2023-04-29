@@ -7,6 +7,13 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Cara Istalasi (using php V8.1/8.2/8.0)
+Extract File Zip-1.21.1
+Copy dll sesuai versi php
+aktifkan ekstensi gd & zip pada php.ini
+jika masih ada kesulitan silahkan kontak user terkait.
+File Import Data Univ & Siswa sesuai dengan contoh template yang sudah disertakan pada repository ini
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

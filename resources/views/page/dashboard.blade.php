@@ -17,7 +17,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
                                         <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><span
-                                                id="total"></span></div>
+                                                id="total_siswa"></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
                                         <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><span
-                                                id="total"></span></div>
+                                                id="total_univ"></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
                                         <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><span
-                                                id="total"></span></div>
+                                                id="total_siswa_rating"></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -80,7 +80,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
                                         <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><span
-                                                id="total"></span></div>
+                                                id="total_siswa_belum_rating"></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -251,11 +251,23 @@
         $(document).ready(function() {
             // chart();
             // chart2();
-            setInterval(chart(), 100000);
-            setInterval(chart2(), 100000);
+            total();
+            chart();
+            chart2();
+            
+            setInterval(() => {
+                total();
+            }, 10000);
+            setInterval(() => {
+                chart2();
+            }, 10000);
+            setInterval(() => {
+                chart();
+            }, 10000);
         });
 
         function chart2() {
+            
             $.ajax({
                 type: 'GET',
                 url: '/admin-rating-siswa',
@@ -353,6 +365,19 @@
                             },
                         ]
                     });
+                }
+            });
+        }
+
+        function total() {
+            $.ajax({
+                type: 'GET',
+                url: '/admin-total-data-dashboard',
+                success: function(response) {
+                    $('#total_siswa').html(response.data.siswa);
+                    $('#total_univ').html(response.data.univ);
+                    $('#total_siswa_belum_rating').html(response.data.siswa_rating);
+                    $('#total_siswa_rating').html(response.data.siswa_belum_rating);
                 }
             });
         }

@@ -18,7 +18,7 @@
                                             <div class="col-md-3">
                                                 <input type="text" style="margin-bottom: 20px; width: 100%" name="link" id="link" class="form-control" placeholder="TAUTAN LINK WEBSITE...">
                                             </div>
-                                            <div class="col-md-1">
+                                            <div class="col-md-2">
                                                 <input type="submit" class="btn btn-success" id="btn_link" value="save" style="width: 100%; margin-bottom: 20px">
                                             </div>
                                         </div>

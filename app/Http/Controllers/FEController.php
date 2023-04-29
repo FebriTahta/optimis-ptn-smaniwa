@@ -282,9 +282,18 @@ class FEController extends Controller
             ]
         );
 
+        $hasil;
+        if ($score > 80) {
+            # code...
+            $hasil = '- LOLOS ('.$score.')';
+        }else {
+            # code...
+            $hasil = '- TIDAK LOLOS ('.$score.')';
+        }
+
          // notif table
          Notif::create([
-            'pesan'=> $siswa->siswa_name.' - Melakukan Rating PTN '. $data->univ->univ_name.' - '.$data->jurusan->jurusan_name,
+            'pesan'=> $siswa->siswa_name.' - Melakukan Rating PTN '. $data->univ->univ_name.' - '.$data->jurusan->jurusan_name.' '.$hasil,
             'status'=> 'unread',
             'user_id'=> null
         ]);
@@ -297,7 +306,7 @@ class FEController extends Controller
             "registration_ids" => $web_token,
             "notification" => [
                 "title" => $siswa->siswa_name.' - Melakukan Rating PTN',
-                "body" => $data->univ->univ_name.' - '.$data->jurusan->jurusan_name,
+                "body" => $data->univ->univ_name.' - '.$data->jurusan->jurusan_name.' - '.$hasil,
                 "content_available" => true,
                 "priority" => "high",
             ]

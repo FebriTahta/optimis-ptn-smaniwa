@@ -39,9 +39,15 @@
     <header class="header_in clearfix">
         <div class="container">
             <div id="logo">
-                <a href="/">
-                    <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
-                </a>
+                @if (auth()->user()->role == 'admin')
+                    <a href="/admin-dashboard">
+                        <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
+                    </a>    
+                @else
+                    <a href="/">
+                        <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
+                    </a>
+                @endif
             </div>
             <ul id="top_menu">
                 @auth
@@ -55,6 +61,9 @@
                             @csrf
                         </form>
                     </li>
+                    @if (auth()->user()->role == 'admin')
+                        <li><a href="/admin-dashboard" class="btn_access">Dashboard</a></li>    
+                    @endif
                 @else
                     <li><a href="/login" class="btn_access">Log In</a></li>
                 @endauth
@@ -64,14 +73,34 @@
                 <i class="icon_menu"></i><span>Menu</span>
             </a>
             <nav class="main-menu">
-                <div id="header_menu">
+                <div id="header_menu" style="background-color: rgb(116, 141, 141)">
                     <a href="#0" class="open_close">
                         <i class="icon_close"></i><span>Menu</span>
                     </a>
-                    <a href="/" style="color: white">Optimis PTN</a>
+                    <a href="/admin-dashboard">
+                        <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
+                    </a> 
+                    {{-- <a href="/" style="color: white">Optimis PTNa</a> --}}
                 </div>
                 <ul>
-                    {{-- <li class="submenu"> --}}
+                    @if (auth()->user()->role == 'admin')
+                    <li>
+                        <a href="/admin-dashboard">Dashboard</a>
+                    </li>
+                    <li>
+                        <li>
+                            <a class="btn_access" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </li>
+                    </li>
+                        
+                    @else
                     <li>
                         {{-- <a href="#0" class="show-submenu">MENU</a>
                         <ul>
@@ -84,6 +113,9 @@
                             <a href="#" id="profile">PROFILE</a>
                         @endauth
                     </li>
+                    @auth
+                    
+                    @endauth
                     <li>
                         @auth
                             <a href="/daftar-ptn">DAFTAR PTN</a>
@@ -91,6 +123,20 @@
                             <a href="#" id="daftar_ptn">DAFTAR PTN</a>
                         @endauth
                     </li>
+                    @endif
+                    {{-- <li class="submenu"> --}}
+                        <li>
+                            <li>
+                                <a class="btn_access" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                             document.getElementById('logout-form').submit();">
+                                    {{ __('LOGOUT') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        </li>
                 </ul>
             </nav>
         </div>

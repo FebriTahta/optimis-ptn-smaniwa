@@ -24,10 +24,98 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 const messaging = getMessaging(app);
 
+$(document).ready(function() {
+    var wrapper = $('.wrapper');
+    var element = document.getElementById("wrap");
+    
+    $.ajax({
+        type: 'GET',
+        url: '/admin-total-notif',
+        success: function(response) {
+            $('#bell').html(response.total);
+            // console.log(response.tanggal);
+            $.each(response.data, function(key, value) {
+                console.log(value.pesan);
+                wrapper.append('<a id="notif'+key+'" class="dropdown-item d-flex align-items-center" href="/admin-notif">'
+                +'<div class="mr-3">'
+                +'<div class="icon-circle bg-warning">'
+                +'  <i class="fas fa-exclamation-triangle text-white"></i>'
+                +'</div>'
+                +'</div>'
+                +'<div>'
+                +'<div class="small text-gray-500">'+response.tanggal[key]+'</div>'
+                +value.pesan+'</div>'
+                +'</a>')
+
+                // $('#notif'+key).remove();
+            });
+            // $(element).remove();
+        }
+    });
+});
+
+$('#mark_read').on('click',function () {
+    var wrapper = $('.wrapper');
+    $.ajax({
+        type: 'GET',
+        url: '/admin-mark-read-notif',
+        success: function(response) {
+            $('#bell').html(response.total);
+            console.log(response.tanggal);
+            toastr.success(response.message);
+            for (let index = 0; index < 3; index++) {
+                if ('#notif'+index) {
+                    $('#notif'+index).remove();
+                }
+            }
+            $.each(response.data, function(key, value) {
+            wrapper.append('<a id="notif'+key+'" class="dropdown-item d-flex align-items-center" href="/admin-notif">'
+                +'<div class="mr-3">'
+                +'<div class="icon-circle bg-warning">'
+                +'  <i class="fas fa-exclamation-triangle text-white"></i>'
+                +'</div>'
+                +'</div>'
+                +'<div>'
+                +'<div class="small text-gray-500">'+response.tanggal[key]+'</div>'
+                + value.pesan + '</div>'
+                +'</a>');
+            });
+        }
+    });  
+});
+
+function notif(){
+    var wrapper = $('.wrapper');
+    $.ajax({
+        type: 'GET',
+        url: '/admin-total-notif',
+        success: function(response) {
+            $('#bell').html(response.total);
+            // console.log(response.tanggal);
+            toastr.success(response.last);
+            $.each(response.data, function(key, value) {
+            $('#notif'+key).remove();
+            wrapper.append('<a id="notif'+key+'" class="dropdown-item d-flex align-items-center" href="/admin-notif">'
+                +'<div class="mr-3">'
+                +'<div class="icon-circle bg-warning">'
+                +'  <i class="fas fa-exclamation-triangle text-white"></i>'
+                +'</div>'
+                +'</div>'
+                +'<div>'
+                +'<div class="small text-gray-500">'+response.tanggal[key]+'</div>'
+                + value.pesan + '</div>'
+                +'</a>');
+            });
+        }
+    });
+}
+
 onMessage(messaging, (payload) => {
-  console.log('Message received. ', payload);
-  alert('Ada siswa yang baru saja melakukan rating PTN');
-  toastr.success('Ada siswa yang baru saja melakukan rating PTN');
+//   console.log('Message received. ', payload);
+//   alert('Ada siswa yang baru saja melakukan rating PTN');
+//   toastr.success('Ada siswa yang baru saja melakukan rating PTN');
+    
+    notif();
 });
 
 
@@ -35,7 +123,7 @@ getToken(messaging, { vapidKey: 'BNN9e3JwYwoNfAoBcOrWsGJvdytliNCPsbp7oYQPhfwAc3J
     if (currentToken) {
         // Send the token to your server and update the UI if necessary
         // ...
-        console.log(currentToken);
+        // console.log(currentToken);
         sentTokenToServer(currentToken);
     } else {
         // Show permission request UI
@@ -81,7 +169,7 @@ function sentTokenToServer(token){
         credentials: "same-origin",
         body: formData,
     }).then((response)=>{
-        console.log(response);
+        // console.log(response);
     })
 
 
