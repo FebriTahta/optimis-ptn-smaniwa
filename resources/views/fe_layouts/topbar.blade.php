@@ -39,6 +39,7 @@
     <header class="header_in clearfix">
         <div class="container">
             <div id="logo">
+                @auth
                 @if (auth()->user()->role == 'admin')
                     <a href="/admin-dashboard">
                         <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
@@ -47,7 +48,9 @@
                     <a href="/">
                         <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
                     </a>
-                @endif
+                @endif    
+                @endauth
+                
             </div>
             <ul id="top_menu">
                 @auth
