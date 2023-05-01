@@ -40,15 +40,16 @@
         <div class="container">
             <div id="logo">
                 @auth
-                @if (auth()->user()->role == 'admin')
-                    <a href="/admin-dashboard">
-                        <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
-                    </a>    
+                    @if (auth()->user()->role == 'admin')
+                        <a href="/admin-dashboard">
+                            <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
+                        </a>    
+                    @else
+                        <a href="/">
+                            <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
+                        </a>
+                    @endif   
                 @else
-                    <a href="/">
-                        <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
-                    </a>
-                @endif   
                 <a href="/">
                     <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
                 </a>
