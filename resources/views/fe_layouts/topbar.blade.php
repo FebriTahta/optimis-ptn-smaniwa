@@ -140,6 +140,8 @@
                                 </form>
                             </li>
                         </li>
+                        @else
+                        <li><a href="/login" class="btn_access">Log In</a></li>
                         @endauth
                        
                 </ul>
