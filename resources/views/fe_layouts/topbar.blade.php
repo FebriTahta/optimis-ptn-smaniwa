@@ -128,7 +128,7 @@
                     @endif
                     {{-- <li class="submenu"> --}}
                         @auth
-                        <li>
+                        {{-- <li>
                             <li>
                                 <a class="btn_access" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
@@ -139,7 +139,7 @@
                                     @csrf
                                 </form>
                             </li>
-                        </li>
+                        </li> --}}
                         @endauth
                        
                 </ul>
