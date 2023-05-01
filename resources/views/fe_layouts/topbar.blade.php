@@ -128,6 +128,7 @@
                     </li>
                     @endif
                     {{-- <li class="submenu"> --}}
+                        @auth
                         <li>
                             <li>
                                 <a class="btn_access" href="{{ route('logout') }}"
@@ -140,6 +141,8 @@
                                 </form>
                             </li>
                         </li>
+                        @endauth
+                       
                 </ul>
             </nav>
         </div>
