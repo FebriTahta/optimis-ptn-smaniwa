@@ -112,7 +112,7 @@ function notif(){
 
 onMessage(messaging, (payload) => {
 //   console.log('Message received. ', payload);
-//   alert('Ada siswa yang baru saja melakukan rating PTN');
+  alert('Ada siswa yang baru saja melakukan rating PTN');
 //   toastr.success('Ada siswa yang baru saja melakukan rating PTN');
     
     notif();
