@@ -48,7 +48,10 @@
                     <a href="/">
                         <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
                     </a>
-                @endif    
+                @endif   
+                <a href="/">
+                    <img src="{{ asset('logo1.png') }}" style="height: 40px;" alt="">
+                </a>
                 @endauth
                 
             </div>
@@ -104,19 +107,12 @@
                             </form>
                         </li>
                     </li>
-                        
+                    <li>
+                        <a href="/my-info">PROFILE</a>
+                    </li>
                     @else
                     <li>
-                        {{-- <a href="#0" class="show-submenu">MENU</a>
-                        <ul>
-                            <li><a href="#">PTN Pilihanku</a></li>
-                            <li><a href="#">Logout</a></li>
-                        </ul> --}}
-                        @auth
-                            <a href="/my-info">PROFILE</a>
-                        @else
-                            <a href="#" id="profile">PROFILE</a>
-                        @endauth
+                        <a href="#" id="profile">PROFILE</a>
                     </li>
                     @endauth
                     <li>
