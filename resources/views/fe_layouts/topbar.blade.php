@@ -74,6 +74,8 @@
                 @else
                     <li><a href="/login" class="btn_access">Log In</a></li>
                 @endauth
+
+                
             </ul>
             <!-- /top_menu -->
             <a href="#0" class="open_close">
@@ -93,36 +95,36 @@
                    
                     @auth
                     @if (auth()->user()->role == 'admin')
-                    <li>
-                        <a href="/admin-dashboard">Dashboard</a>
-                    </li>
-                    <li>
-                        <li>
-                            <a class="btn_access" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
+                        {{-- <li>
+                            <a href="/admin-dashboard">Dashboard</a>
                         </li>
-                    </li>
-                    <li>
-                        <a href="/my-info">PROFILE</a>
-                    </li>
-                    @else
-                    <li>
-                        <a href="#" id="profile">PROFILE</a>
-                    </li>
-                    @endauth
-                    <li>
-                        @auth
-                            <a href="/daftar-ptn">DAFTAR PTN</a>
+                        <li>
+                            <li>
+                                <a class="btn_access" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                            document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        </li> --}}
+                        <li>
+                            <a href="/my-info">PROFILE</a>
+                        </li>
                         @else
-                            <a href="#" id="daftar_ptn">DAFTAR PTN</a>
+                        <li>
+                            <a href="#" id="profile">PROFILE</a>
+                        </li>
                         @endauth
-                    </li>
+                        <li>
+                            @auth
+                                <a href="/daftar-ptn">DAFTAR PTN</a>
+                            @else
+                                <a href="#" id="daftar_ptn">DAFTAR PTN</a>
+                            @endauth
+                        </li>
                     @endif
                     {{-- <li class="submenu"> --}}
                         @auth
