@@ -86,6 +86,8 @@
                     {{-- <a href="/" style="color: white">Optimis PTNa</a> --}}
                 </div>
                 <ul>
+                   
+                    @auth
                     @if (auth()->user()->role == 'admin')
                     <li>
                         <a href="/admin-dashboard">Dashboard</a>
@@ -116,8 +118,6 @@
                             <a href="#" id="profile">PROFILE</a>
                         @endauth
                     </li>
-                    @auth
-                    
                     @endauth
                     <li>
                         @auth
