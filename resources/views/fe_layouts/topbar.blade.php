@@ -35,7 +35,7 @@
 </head>
 
 <body>
-
+    
     <header class="header_in clearfix">
         <div class="container">
             <div id="logo">
@@ -68,9 +68,6 @@
                             @csrf
                         </form>
                     </li>
-                    @if (auth()->user()->role == 'admin')
-                        <li><a href="/admin-dashboard" class="btn_access">Dashboard</a></li>    
-                    @endif
                 @else
                     <li><a href="/login" class="btn_access">Log In</a></li>
                 @endauth
@@ -92,10 +89,8 @@
                     {{-- <a href="/" style="color: white">Optimis PTNa</a> --}}
                 </div>
                 <ul>
-                   
-                    @auth
-                    @if (auth()->user()->role == 'admin')
-                        {{-- <li>
+                    
+                    {{-- <li>
                             <a href="/admin-dashboard">Dashboard</a>
                         </li>
                         <li>
@@ -110,36 +105,47 @@
                                 </form>
                             </li>
                         </li> --}}
-                        <li>
-                            <a href="/my-info">PROFILE</a>
-                        </li>
+
+                    {{-- new --}}
+                    @auth
+                        @if (auth()->user()->role !== 'admin')
+                            <li>
+                                <a href="/my-info">PROFILE</a>
+                            </li>
+                            <li>
+                                <a href="/daftar-ptn">DAFTAR PTN</a>
+                            </li>
                         @else
+                            <li><a href="/admin-dashboard" class="btn_access">Dashboard</a></li>    
+                        @endif
+                    @else
                         <li>
                             <a href="#" id="profile">PROFILE</a>
                         </li>
-                        @endauth
                         <li>
-                            @auth
-                                <a href="/daftar-ptn">DAFTAR PTN</a>
-                            @else
-                                <a href="#" id="daftar_ptn">DAFTAR PTN</a>
-                            @endauth
+                            <a href="#" id="daftar_ptn">DAFTAR PTN</a>
                         </li>
-                    @endif
+                    @endauth
+
                     {{-- <li class="submenu"> --}}
                         @auth
-                        {{-- <li>
-                            <li>
-                                <a class="btn_access" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                             document.getElementById('logout-form').submit();">
-                                    {{ __('LOGOUT') }}
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </li>
-                        </li> --}}
+                        <style>
+                            @media only screen and (min-width: 600px) {
+                                #logout_mobile {
+                                    display: none;
+                                }
+                            }
+                        </style>
+                        <li class="mobile" id="logout_mobile">
+                            <a class="btn_access" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                {{ __('LOGOUT') }}
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </li>
                         @endauth
                        
                 </ul>
